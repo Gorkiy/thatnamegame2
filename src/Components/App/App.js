@@ -23,20 +23,27 @@ class App extends Component {
   }
   
   onFormSubmit = (guess) => {
-    console.log(guess);
+    const cityOptions = this.formatGuess(guess);
     
     if (this.state.turn.activePlayer === 'human') {
       if (guess[0].toUpperCase() === this.state.turn.firstLetter) {
-        // Checks if passed guess is a valid city. If so, save city object to comp.recentTurn.city
-        if (comp.checkUserInput(guess)) {
-          this.makeTurn('human');
-        };
         
+        for (let option of cityOptions) {
+          if (comp.alreadyPlayed.has(option)) {
+            console.log(`Город ${option} уже был сыгран в этом матче. Повторяться нельзя!`);
+            return;
+            // Checks if passed guess is a valid city. If so, save city object to comp.recentTurn.city
+          } else if (comp.checkUserInput(option)) {
+            this.makeTurn('human');
+            return option;
+          } else {
+            console.log(`Не знаю города ${option}!`);
+          }
+        }
       } else {
         console.log('Город должен начинаться на букву ' + this.state.turn.firstLetter);
       }
     }
-    
   }
   
   onButtonClick = () => {
@@ -49,10 +56,13 @@ class App extends Component {
     
     if (player === 'computer') {
       const answer = comp.answer(this.state.turn.firstLetter);
-      await this.updateGameState('computer', answer);
-      // setTimeout(function() {
-      //   this.updateGameState('computer', answer);
-      // }.bind(this), 2000);
+      await new Promise((resolve, reject) => {
+        resolve(
+          setTimeout(function() {
+          this.updateGameState('computer', answer);
+          }.bind(this), 2000)
+        );
+      });
     } else if (player === 'human') {
       const recentTurn = comp.recentTurn.city;
       await this.updateGameState('human', recentTurn);
@@ -71,9 +81,26 @@ class App extends Component {
       firstLetter: comp.recentTurn.lastLetter
       }
     });
+  }
+  
+  formatGuess(guess) {
+    let options = [];
     
-    console.log(this.state.turn);
+    let city = guess.trim();
+    city = city[0].toUpperCase() + city.slice(1);
+    city = city.replace(/\s+/g, ' ');
+    city = city.replace(/[^а-яА-Я- ]/g, '');
+    options.push(city);
     
+    if (/ /g.test(city)) {
+      const copy = city;
+      const cityWithDashes = copy.replace(/ /g, '-');
+      const cityWithNoSpaces = copy.replace(/ /g, '');
+      options.push(cityWithDashes);
+      options.push(cityWithNoSpaces);
+    }
+    console.log(options);
+    return options;
   }
   
   markCityAsPlayed(cityObj) {

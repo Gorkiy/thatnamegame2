@@ -41,7 +41,6 @@ class Computer {
     }
     
     const answer = data[index];
-    this.alreadyPlayed.add(answer.city);
     this.recentTurn.city = answer;
     this.defineLastLetter(answer.city);
     this.deleteCity(answer);
@@ -53,16 +52,10 @@ class Computer {
     
     for (let cityObj of this.data.bigCities[firstLetter]) {
       if (cityObj.city.toLowerCase() === guess.toLowerCase()) {
-        
-        // const lastLetter = this.defineLastLetter(cityObj.city);
-        // console.log(lastLetter);
-        
         this.recentTurn = {
           city: cityObj,
           lastLetter: this.defineLastLetter(cityObj.city)
         }
-        console.log(this.recentTurn);
-        
         this.deleteCity(cityObj);
         return true;
       }
@@ -83,6 +76,7 @@ class Computer {
   
   deleteCity(cityData) {
     const city = cityData.city;
+    this.alreadyPlayed.add(city);
     const firstLetter = city[0].toUpperCase();
     
     if (cityData.size === 1 && !cityData.interest.length) {
@@ -94,7 +88,7 @@ class Computer {
       const bigCities = this.data.bigCities[firstLetter].filter(cityObj => {
         return cityObj.city !== city;
       });
-      this.data.bigCities[firstLetter] = bigCities
+      this.data.bigCities[firstLetter] = bigCities;
     }
   }
   
