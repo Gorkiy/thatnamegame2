@@ -1,5 +1,6 @@
 .input-bar {
-  margin: 20px auto;
+  /* margin: 20px auto; */
+  margin-top: auto;
 }
 
 .input-bar__form {

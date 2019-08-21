@@ -1,11 +1,16 @@
 import React, { Component } from 'react';
 import UserInput from '../UserInput/UserInput';
 import Modal from '../Modal/Modal';
+import Scoreboard from '../Scoreboard/Scoreboard';
 import TurnsList from '../TurnsList/TurnsList';
 import Computer from '../../Utils/Computer';
 import './App.css';
 
-const comp = new Computer('ru');
+let comp = new Computer('ru');
+const gameConfig = {
+  turnLimit: 10,
+  cityValue: {'0': 3, '1': 1, '2': 2}
+}
 
 class App extends Component {
   state = {
@@ -16,7 +21,10 @@ class App extends Component {
       firstLetter: ''
     },
     playedCities: [],
-    turnNumber: 0
+    turnNumber: 0,
+    timeLeft: gameConfig.turnLimit,
+    score: 0,
+    timer: null
   }
   
   componentDidMount() {
@@ -34,20 +42,29 @@ class App extends Component {
             return;
             // Checks if passed guess is a valid city. If so, save city object to comp.recentTurn.city
           } else if (comp.checkUserInput(option)) {
+            clearInterval(this.timer);
             this.makeTurn('human');
             return option;
-          } else {
-            console.log(`Не знаю города ${option}!`);
-          }
+          } 
         }
+        console.log(`Не знаю города ${guess}!`);
+        
       } else {
         console.log('Город должен начинаться на букву ' + this.state.turn.firstLetter);
       }
     }
   }
   
-  onButtonClick = () => {
-    this.setState({ gameStarted: true });
+  onButtonClick = async () => {
+    // if (!this.state.gameStarted) {
+    // 
+    // }
+    comp = new Computer('ru');
+    await this.setState({ gameStarted: true });
+    await this.setState({ gameEnded: false });
+    await this.setState({ playedCities: [] });
+    await this.setState({ turnNumber: 0 });
+    await this.setState({ score: 0 });
     this.makeTurn('computer');
   }
   
@@ -59,16 +76,40 @@ class App extends Component {
       await new Promise((resolve, reject) => {
         resolve(
           setTimeout(function() {
-          this.updateGameState('computer', answer);
+            this.updateGameState('computer', answer);
           }.bind(this), 2000)
         );
       });
     } else if (player === 'human') {
       const recentTurn = comp.recentTurn.city;
+      this.incrementScore(recentTurn.size);
       await this.updateGameState('human', recentTurn);
       this.makeTurn('computer');
     }
   }
+  
+  runTimer() {
+    this.setState({ timeLeft: gameConfig.turnLimit });
+    
+    this.timer = setInterval(function() {
+      this.setState({ timeLeft: this.state.timeLeft - 1 });
+      if (this.state.timeLeft <= 0) {
+        clearInterval(this.timer);
+        this.setState({ gameEnded: true});
+      }
+    }.bind(this), 1000);
+  }
+  
+  // runTimer() {
+  //   this.setState({ timeLeft: gameConfig.turnLimit });
+  // 
+  //   const timerId = setInterval(function() {
+  //     this.setState({ timeLeft: this.state.timeLeft - 1 });
+  //     if (this.state.timeLeft <= 0 || this.state.turn.activePlayer === 'computer') {
+  //       clearInterval(timerId);
+  //     }
+  //   }.bind(this), 1000);
+  // }
   
   updateGameState(player, cityObj) {
     const nextPlayer = player === 'human' ? 'computer' : 'human';
@@ -81,6 +122,11 @@ class App extends Component {
       firstLetter: comp.recentTurn.lastLetter
       }
     });
+    
+    if (nextPlayer === 'human') {
+      this.runTimer();
+    }
+    
   }
   
   formatGuess(guess) {
@@ -109,12 +155,30 @@ class App extends Component {
     this.setState({ playedCities: played });
   }
   
+  incrementScore(citySize) {
+    let score = this.state.score;
+    
+    switch(citySize) {
+      case 0: 
+        score += gameConfig.cityValue[citySize];
+        break;
+      case 2:
+        score += gameConfig.cityValue[citySize];
+        break;
+      default:
+        score += 1;
+    }
+    this.setState({ score });
+    // console.log(this.state.score);
+  }
+  
   render() {
     return (
       <div className="game-wrapper">
-        <Modal gameStarted={this.state.gameStarted} onButtonClick={this.onButtonClick}/>
-        <UserInput firstLetter={this.state.turn.firstLetter} player={this.state.turn.activePlayer} onSubmit={this.onFormSubmit}/>
+        <Modal gameStarted={this.state.gameStarted} gameEnded={this.state.gameEnded} score={this.state.score} onButtonClick={this.onButtonClick}/>
+        <Scoreboard turn={this.state.turnNumber} score={this.state.score} timeLeft={this.state.timeLeft}/>
         <TurnsList turn={this.state.turn} playedCities={this.state.playedCities} gameEnded={this.state.gameEnded} />
+        <UserInput firstLetter={this.state.turn.firstLetter} player={this.state.turn.activePlayer} onSubmit={this.onFormSubmit}/>
       </div>
     );
   }

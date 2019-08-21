@@ -1,9 +1,9 @@
 .turns {
   overflow-y: scroll;
-  height: 80vh;
   list-style: none;
   margin: 0;
   padding: 0;
+  border: 1px solid #EDEDED;
 }
 
 .turns__item {

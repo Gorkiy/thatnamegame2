@@ -11,15 +11,31 @@ class Modal extends Component {
     this.props.onButtonClick();
   }
   
+  getContent() {
+    if (this.props.gameEnded) {
+      return {
+        title: 'Геймовер',
+        description: `Канецъ. Ваш финальный счет ${this.props.score} очков`,
+        buttonText: 'Новая игра'
+      }
+    }
+    
+    return {
+      title: 'Привет!',
+      description: 'Правила очень простые — называй реально существующие города на последнюю букву города, который сыграл компьютер.',
+      buttonText: 'Окей!'
+    }
+  }
+  
   render() {
-    const gameStarted = !this.props.gameStarted ? "modal_show" : "";
+    const gameStarted = !this.props.gameStarted || this.props.gameEnded ? "modal_show" : "";
     
     return (
       <div className={`modal ${gameStarted}`}>
         <div className="modal-content">
-          <h2 className="modal__title">Привет!</h2>
-          <p className="modal__description">Правила очень простые — называй реально существующие города на последнюю букву города, который сыграл компьютер.</p>
-          <button className="modal__button" type="button" onClick={this.handleClick}>Окей!
+          <h2 className="modal__title">{this.getContent().title}</h2>
+          <p className="modal__description">{this.getContent().description}</p>
+          <button className="modal__button" type="button" onClick={this.handleClick}>{this.getContent().buttonText}
           </button>
         </div>
       </div>
