@@ -8,7 +8,7 @@ import './App.css';
 
 let comp = new Computer('ru');
 const gameConfig = {
-  turnLimit: 10,
+  turnLimit: 30,
   cityValue: {'0': 3, '1': 1, '2': 2}
 }
 
@@ -24,13 +24,15 @@ class App extends Component {
     turnNumber: 0,
     timeLeft: gameConfig.turnLimit,
     score: 0,
-    timer: null
+    timer: null,
+    message: ''
   }
   
   componentDidMount() {
   }
   
   onFormSubmit = (guess) => {
+    this.setState({ message: '' });
     const cityOptions = this.formatGuess(guess);
     
     if (this.state.turn.activePlayer === 'human') {
@@ -38,7 +40,8 @@ class App extends Component {
         
         for (let option of cityOptions) {
           if (comp.alreadyPlayed.has(option)) {
-            console.log(`Город ${option} уже был сыгран в этом матче. Повторяться нельзя!`);
+            this.setState({ message: `Город ${option} уже был сыгран в этом матче. Повторяться нельзя!`});
+            // console.log(`Город ${option} уже был сыгран в этом матче. Повторяться нельзя!`);
             return;
             // Checks if passed guess is a valid city. If so, save city object to comp.recentTurn.city
           } else if (comp.checkUserInput(option)) {
@@ -47,10 +50,12 @@ class App extends Component {
             return option;
           } 
         }
-        console.log(`Не знаю города ${guess}!`);
+        this.setState({ message: `Не знаю города ${guess}!`});
+        // console.log(`Не знаю города ${guess}!`);
         
       } else {
-        console.log('Город должен начинаться на букву ' + this.state.turn.firstLetter);
+        this.setState({ message: 'Город должен начинаться на букву ' + this.state.turn.firstLetter });
+        // console.log('Город должен начинаться на букву ' + this.state.turn.firstLetter);
       }
     }
   }
@@ -100,17 +105,6 @@ class App extends Component {
     }.bind(this), 1000);
   }
   
-  // runTimer() {
-  //   this.setState({ timeLeft: gameConfig.turnLimit });
-  // 
-  //   const timerId = setInterval(function() {
-  //     this.setState({ timeLeft: this.state.timeLeft - 1 });
-  //     if (this.state.timeLeft <= 0 || this.state.turn.activePlayer === 'computer') {
-  //       clearInterval(timerId);
-  //     }
-  //   }.bind(this), 1000);
-  // }
-  
   updateGameState(player, cityObj) {
     const nextPlayer = player === 'human' ? 'computer' : 'human';
     cityObj.player = player;
@@ -124,6 +118,7 @@ class App extends Component {
     });
     
     if (nextPlayer === 'human') {
+      this.setState({ message: `Нужно сыграть любой город на ${this.state.turn.firstLetter}`});
       this.runTimer();
     }
     
@@ -178,7 +173,7 @@ class App extends Component {
         <Modal gameStarted={this.state.gameStarted} gameEnded={this.state.gameEnded} score={this.state.score} onButtonClick={this.onButtonClick}/>
         <Scoreboard turn={this.state.turnNumber} score={this.state.score} timeLeft={this.state.timeLeft}/>
         <TurnsList turn={this.state.turn} playedCities={this.state.playedCities} gameEnded={this.state.gameEnded} />
-        <UserInput firstLetter={this.state.turn.firstLetter} player={this.state.turn.activePlayer} onSubmit={this.onFormSubmit}/>
+        <UserInput firstLetter={this.state.turn.firstLetter} player={this.state.turn.activePlayer} message={this.state.message} onSubmit={this.onFormSubmit}/>
       </div>
     );
   }

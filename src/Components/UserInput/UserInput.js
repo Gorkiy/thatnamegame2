@@ -10,21 +10,23 @@ class UserInput extends Component {
   
   componentDidUpdate(prevProps) {
     if (this.props.player === 'human') {
-      if (prevProps.firstLetter !== this.props.firstLetter) {
+      if (prevProps.player !== this.props.player) {
         this.setState({ guess: this.props.firstLetter });
       }
+      this.inputRef.current.disabled = false;
       this.focusInput();
+    } else {
+      this.inputRef.current.disabled = true;
     }
+  }
+  
+  focusInput() {
+    this.inputRef.current.focus();
   }
   
   onFormSubmit = (event) => {
     event.preventDefault();
     this.props.onSubmit(this.state.guess);
-    console.log(this.props);
-  }
-  
-  focusInput() {
-    this.inputRef.current.focus();
   }
   
   handleChange = (e) => {
@@ -37,6 +39,7 @@ class UserInput extends Component {
         <form className="input-bar__form" onSubmit={this.onFormSubmit}>
           <input className="input-bar__text" type="text" ref={this.inputRef} value={this.state.guess} 
           onChange={this.handleChange} />
+          <p className="input-bar__message">{this.props.message}</p>
         </form>
       </div>
     );

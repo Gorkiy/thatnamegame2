@@ -14,14 +14,14 @@ class Modal extends Component {
   getContent() {
     if (this.props.gameEnded) {
       return {
-        title: 'Геймовер',
-        description: `Канецъ. Ваш финальный счет ${this.props.score} очков`,
+        title: 'Game Over',
+        description: `Ваш финальный счет ${this.props.score} очков`,
         buttonText: 'Новая игра'
       }
     }
     
     return {
-      title: 'Привет!',
+      title: 'Новая игра',
       description: 'Правила очень простые — называй реально существующие города на последнюю букву города, который сыграл компьютер.',
       buttonText: 'Окей!'
     }
