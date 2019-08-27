@@ -27,52 +27,7 @@ class App extends Component {
     timer: null,
     message: ''
   }
-  
-  componentDidMount() {
-  }
-  
-  onFormSubmit = (guess) => {
-    this.setState({ message: '' });
-    const cityOptions = this.formatGuess(guess);
-    
-    if (this.state.turn.activePlayer === 'human') {
-      if (guess[0].toUpperCase() === this.state.turn.firstLetter) {
-        
-        for (let option of cityOptions) {
-          if (comp.alreadyPlayed.has(option)) {
-            this.setState({ message: `Город ${option} уже был сыгран в этом матче. Повторяться нельзя!`});
-            // console.log(`Город ${option} уже был сыгран в этом матче. Повторяться нельзя!`);
-            return;
-            // Checks if passed guess is a valid city. If so, save city object to comp.recentTurn.city
-          } else if (comp.checkUserInput(option)) {
-            clearInterval(this.timer);
-            this.makeTurn('human');
-            return option;
-          } 
-        }
-        this.setState({ message: `Не знаю города ${guess}!`});
-        // console.log(`Не знаю города ${guess}!`);
-        
-      } else {
-        this.setState({ message: 'Город должен начинаться на букву ' + this.state.turn.firstLetter });
-        // console.log('Город должен начинаться на букву ' + this.state.turn.firstLetter);
-      }
-    }
-  }
-  
-  onButtonClick = async () => {
-    // if (!this.state.gameStarted) {
-    // 
-    // }
-    comp = new Computer('ru');
-    await this.setState({ gameStarted: true });
-    await this.setState({ gameEnded: false });
-    await this.setState({ playedCities: [] });
-    await this.setState({ turnNumber: 0 });
-    await this.setState({ score: 0 });
-    this.makeTurn('computer');
-  }
-  
+
   async makeTurn(player) {
     await this.setState({ turnNumber: this.state.turnNumber + 1 });
     
@@ -92,6 +47,23 @@ class App extends Component {
       this.makeTurn('computer');
     }
   }
+
+  updateGameState(player, cityObj) {
+    const nextPlayer = player === 'human' ? 'computer' : 'human';
+    cityObj.player = player;
+    cityObj.turnNumber = this.state.turnNumber;
+    
+    this.markCityAsPlayed(cityObj);
+    this.setState({ turn: {
+      activePlayer: nextPlayer,
+      firstLetter: comp.recentTurn.lastLetter
+      }
+    });    
+    if (nextPlayer === 'human') {
+      this.setState({ message: `Нужно сыграть любой город на ${this.state.turn.firstLetter}`});
+      this.runTimer();
+    }
+  }
   
   runTimer() {
     this.setState({ timeLeft: gameConfig.turnLimit });
@@ -103,25 +75,6 @@ class App extends Component {
         this.setState({ gameEnded: true});
       }
     }.bind(this), 1000);
-  }
-  
-  updateGameState(player, cityObj) {
-    const nextPlayer = player === 'human' ? 'computer' : 'human';
-    cityObj.player = player;
-    cityObj.turnNumber = this.state.turnNumber;
-    
-    this.markCityAsPlayed(cityObj);
-    this.setState({ turn: {
-      activePlayer: nextPlayer,
-      firstLetter: comp.recentTurn.lastLetter
-      }
-    });
-    
-    if (nextPlayer === 'human') {
-      this.setState({ message: `Нужно сыграть любой город на ${this.state.turn.firstLetter}`});
-      this.runTimer();
-    }
-    
   }
   
   formatGuess(guess) {
@@ -164,7 +117,41 @@ class App extends Component {
         score += 1;
     }
     this.setState({ score });
-    // console.log(this.state.score);
+  }
+  
+  onFormSubmit = (guess) => {
+    this.setState({ message: '' });
+    const cityOptions = this.formatGuess(guess);
+    
+    if (this.state.turn.activePlayer === 'human') {
+      if (guess[0].toUpperCase() === this.state.turn.firstLetter) {
+        
+        for (let option of cityOptions) {
+          if (comp.alreadyPlayed.has(option)) {
+            this.setState({ message: `Город ${option} уже был сыгран в этом матче. Повторяться нельзя!`});
+            return;
+          } else if (comp.checkUserInput(option)) {
+            clearInterval(this.timer);
+            this.makeTurn('human');
+            return option;
+          } 
+        }
+        this.setState({ message: `Не знаю города ${guess}!`});
+      } else {
+        this.setState({ message: 'Город должен начинаться на букву ' + this.state.turn.firstLetter });
+      }
+    }
+  }
+  
+  onButtonClick = async () => {
+    //Reset setting and init new game
+    comp = new Computer('ru');
+    await this.setState({ gameStarted: true });
+    await this.setState({ gameEnded: false });
+    await this.setState({ playedCities: [] });
+    await this.setState({ turnNumber: 0 });
+    await this.setState({ score: 0 });
+    this.makeTurn('computer');
   }
   
   render() {

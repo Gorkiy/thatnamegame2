@@ -1,26 +1,40 @@
 import React, { Component } from 'react';
 import './Turn.css';
 
-class Turn extends Component {
-  
-  renderTurn() {
-    if (this.props.blank) {
-      return (
-        <li className="turns__item">
-          {this.props.firstLetter + '...' || '...'} <span className="turn__player">{this.props.player}</span>
-        </li>
-      );
+class Turn extends Component {  
+  renderCity() {
+    if (!this.props.city) {
+      return this.props.firstLetter + '...' || '...'
     } else {
-      return (
-        <li className="turns__item">
-          {this.props.city} <span className="turn__player">{this.props.player}</span>
-        </li>
-      );
+      return this.props.city;
     }
+  }
+  
+  renderCountry() {
+    if (this.props.city) {
+      return this.props.country;
+    }
+  }
+  
+  renderAvatar(player) {
+    return <img src={ `./${player}.svg` } />
   }
 
   render() {
-    return this.renderTurn();
+    return (
+      <li className="turns__item">
+        <div className="turns__wrapper">
+          <span className="turns__city">
+            {this.renderCity()}          
+          </span>
+          <span className="turns__country">
+            {this.renderCountry()}
+          </span>
+        </div>
+        <div className={ `turns__player turns__player--${this.props.player}` }>
+        </div>
+      </li>
+    )
   }
 }
 

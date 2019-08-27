@@ -24,6 +24,12 @@ class UserInput extends Component {
     this.inputRef.current.focus();
   }
   
+  renderMsg() {
+    if (this.props.message) {
+      return <p className="guess__message">{this.props.message}</p>
+    }
+  }
+  
   onFormSubmit = (event) => {
     event.preventDefault();
     this.props.onSubmit(this.state.guess);
@@ -35,11 +41,14 @@ class UserInput extends Component {
   
   render() {
     return (
-      <div className="input-bar">
-        <form className="input-bar__form" onSubmit={this.onFormSubmit}>
-          <input className="input-bar__text" type="text" ref={this.inputRef} value={this.state.guess} 
+      <div className="guess">
+        <form className="guess__form" onSubmit={this.onFormSubmit}>
+          <input className="guess__input" type="text" ref={this.inputRef} value={this.state.guess} 
           onChange={this.handleChange} />
-          <p className="input-bar__message">{this.props.message}</p>
+          <button className="guess__button" type="submit"></button>
+          <div class="guess__msg-wrapper">
+            {this.renderMsg()}
+          </div>
         </form>
       </div>
     );
