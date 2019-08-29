@@ -15,11 +15,11 @@ class TurnsList extends Component {
   
   renderTurns() {  
     const turns = this.props.playedCities.map(cityObj => {
-      return <Turn key={cityObj.turnNumber} city={cityObj.city} country={cityObj.country} player={cityObj.player} />;
+      return <Turn key={cityObj.turnNumber} turnNumber={cityObj.turnNumber} turnScore={cityObj.turnScore} city={cityObj.city} size={cityObj.size} country={cityObj.country} player={cityObj.player} />;
     });
     
     if (!this.props.gameEnded) {
-      let currentTurn = <Turn key={this.props.turnNumber + 1} firstLetter={this.props.turn.firstLetter} player={this.props.turn.activePlayer} blank={true} />;
+      let currentTurn = <Turn key={this.props.turnNumber + 1} turnNumber={this.props.turnNumber} firstLetter={this.props.turn.firstLetter} player={this.props.turn.activePlayer} blank={true} />;
       turns.push(currentTurn);
     }
     

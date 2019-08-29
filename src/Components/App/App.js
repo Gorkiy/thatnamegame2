@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import UserInput from '../UserInput/UserInput';
 import Modal from '../Modal/Modal';
-import Scoreboard from '../Scoreboard/Scoreboard';
+import Scorebar from '../Scorebar/Scorebar';
 import TurnsList from '../TurnsList/TurnsList';
 import Computer from '../../Utils/Computer';
 import './App.css';
@@ -23,26 +23,31 @@ class App extends Component {
     playedCities: [],
     turnNumber: 0,
     timeLeft: gameConfig.turnLimit,
-    score: 0,
+    score: {
+      human: 0,
+      computer: 0
+    },
+    turnScore: null,
     timer: null,
     message: ''
   }
 
   async makeTurn(player) {
-    await this.setState({ turnNumber: this.state.turnNumber + 1 });
-    
     if (player === 'computer') {
+      await this.setState({ turnNumber: this.state.turnNumber + 1 });
       const answer = comp.answer(this.state.turn.firstLetter);
       await new Promise((resolve, reject) => {
         resolve(
           setTimeout(function() {
+            this.incrementScore('computer', answer.size);
             this.updateGameState('computer', answer);
+            this.setState({ turnNumber: this.state.turnNumber + 1 });
           }.bind(this), 2000)
         );
       });
     } else if (player === 'human') {
       const recentTurn = comp.recentTurn.city;
-      this.incrementScore(recentTurn.size);
+      await this.incrementScore('human', recentTurn.size);
       await this.updateGameState('human', recentTurn);
       this.makeTurn('computer');
     }
@@ -52,6 +57,7 @@ class App extends Component {
     const nextPlayer = player === 'human' ? 'computer' : 'human';
     cityObj.player = player;
     cityObj.turnNumber = this.state.turnNumber;
+    cityObj.turnScore = this.state.turnScore;
     
     this.markCityAsPlayed(cityObj);
     this.setState({ turn: {
@@ -93,7 +99,6 @@ class App extends Component {
       options.push(cityWithDashes);
       options.push(cityWithNoSpaces);
     }
-    console.log(options);
     return options;
   }
   
@@ -103,20 +108,26 @@ class App extends Component {
     this.setState({ playedCities: played });
   }
   
-  incrementScore(citySize) {
-    let score = this.state.score;
-    
+  incrementScore(player, citySize) {
+    const score = {...this.state.score};
+    let turnScore = NaN;
+  
     switch(citySize) {
       case 0: 
-        score += gameConfig.cityValue[citySize];
+        turnScore = gameConfig.cityValue[citySize];
+        score[player] += turnScore;
         break;
       case 2:
-        score += gameConfig.cityValue[citySize];
+        turnScore = gameConfig.cityValue[citySize];
+        score[player] += turnScore;
         break;
       default:
-        score += 1;
+        turnScore = 1;
+        score[player] += turnScore;
     }
+    this.setState({ turnScore });
     this.setState({ score });
+    // return turnScore;
   }
   
   onFormSubmit = (guess) => {
@@ -150,7 +161,18 @@ class App extends Component {
     await this.setState({ gameEnded: false });
     await this.setState({ playedCities: [] });
     await this.setState({ turnNumber: 0 });
-    await this.setState({ score: 0 });
+    await this.setState({ 
+      score: {
+        human: 0,
+        computer: 0
+      } 
+    });
+    await this.setState({
+      turn: {
+        activePlayer: 'computer',
+        firstLetter: ''
+      }
+    })
     this.makeTurn('computer');
   }
   
@@ -158,9 +180,9 @@ class App extends Component {
     return (
       <div className="game-wrapper">
         <Modal gameStarted={this.state.gameStarted} gameEnded={this.state.gameEnded} score={this.state.score} onButtonClick={this.onButtonClick}/>
-        <Scoreboard turn={this.state.turnNumber} score={this.state.score} timeLeft={this.state.timeLeft}/>
-        <TurnsList turn={this.state.turn} playedCities={this.state.playedCities} gameEnded={this.state.gameEnded} />
-        <UserInput firstLetter={this.state.turn.firstLetter} player={this.state.turn.activePlayer} message={this.state.message} onSubmit={this.onFormSubmit}/>
+        <Scorebar turn={this.state.turnNumber} score={this.state.score} timeLeft={this.state.timeLeft}/>
+        <TurnsList turn={this.state.turn} turnNumber={this.state.turnNumber} playedCities={this.state.playedCities} gameEnded={this.state.gameEnded} />
+        <UserInput firstLetter={this.state.turn.firstLetter} player={this.state.turn.activePlayer} message={this.state.message} gameEnded={this.state.gameEnded} onSubmit={this.onFormSubmit}/>
       </div>
     );
   }

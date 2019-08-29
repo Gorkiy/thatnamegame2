@@ -15,7 +15,7 @@ class Modal extends Component {
     if (this.props.gameEnded) {
       return {
         title: 'Game Over',
-        description: `Ваш финальный счет ${this.props.score} очков`,
+        description: `Ваш финальный счет ${this.props.score.human} очков`,
         buttonText: 'Новая игра'
       }
     }

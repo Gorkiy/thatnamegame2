@@ -18,6 +18,13 @@ class UserInput extends Component {
     } else {
       this.inputRef.current.disabled = true;
     }
+    
+    if (prevProps.gameEnded !== this.props.gameEnded && this.props.gameEnded) {
+      // this.inputRef.current.disabled = true;
+      this.inputRef.current.blur();
+      this.setState({ guess: '' });
+    }
+    
   }
   
   focusInput() {
@@ -46,7 +53,7 @@ class UserInput extends Component {
           <input className="guess__input" type="text" ref={this.inputRef} value={this.state.guess} 
           onChange={this.handleChange} />
           <button className="guess__button" type="submit"></button>
-          <div class="guess__msg-wrapper">
+          <div className="guess__msg-wrapper">
             {this.renderMsg()}
           </div>
         </form>

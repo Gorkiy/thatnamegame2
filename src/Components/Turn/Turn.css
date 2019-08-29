@@ -1,4 +1,5 @@
 .turns__item {
+  position: relative;
   display: flex;
   justify-content: space-between;
   min-height: 72px;
@@ -8,14 +9,42 @@
 .turns__wrapper {
   width: 80%;
   display: flex;
-  justify-content: space-between;
   flex-wrap: wrap;
+  align-items: baseline;
   padding: 15px 0;
 }
 
+.turns__number {
+  position: absolute;
+  top: 7px;
+  left: 9px;
+  font-family: Montserrat-Regular;
+  font-size: 11px;
+  color: #A1A1A1;
+}
+
+.turns__city {
+  width: 100%;
+  display: inline-block;
+  font-size: 20px;
+  color: #000000;
+}
+
+.turns__country {
+  margin-top: 3px;
+  font-size: 12px;
+  color: #737373;
+  text-transform: uppercase;
+}
+
+.turns__bonus {
+  margin-left: 4px;
+  font-size: 12px;
+  color: #FD8A2E;
+  text-transform: uppercase;
+}
+
 .turns__player {
-  /* margin: auto 0; */
-  /* margin-left: auto; */
   width: 50px;
   height: 50px;
   background-color: rgba(253, 138, 46, 0.1);
@@ -34,18 +63,16 @@
   background-image: url("./human.svg");
 }
 
-.turns__city {
-  width: 100%;
-  display: inline-block;
-  font-family: Montserrat-Regular;
-  font-size: 20px;
-  color: #000000;
-}
-
-.turns__country {
-  margin-top: 3px;
-  font-family: Montserrat-Regular;
-  font-size: 12px;
-  color: #737373;
-  text-transform: uppercase;
+.turns__score {
+  padding-top: 2px;
+  position: absolute;
+  top: 7px;
+  right: 7px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: #FD8A2E;
+  font-size: 18px;
+  text-align: center;
+  color: #FFFFFF;
 }
