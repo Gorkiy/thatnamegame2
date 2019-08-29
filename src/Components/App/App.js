@@ -29,7 +29,10 @@ class App extends Component {
     },
     turnScore: null,
     timer: null,
-    message: ''
+    messageCode: {
+      code: 0,
+      value: null
+    }
   }
 
   async makeTurn(player) {
@@ -66,7 +69,12 @@ class App extends Component {
       }
     });    
     if (nextPlayer === 'human') {
-      this.setState({ message: `Нужно сыграть любой город на ${this.state.turn.firstLetter}`});
+      this.setState({ messageCode: { 
+        code: 3,
+        value: this.state.turn.firstLetter
+      }});
+      
+      // this.setState({ messageCode: `Нужно сыграть любой город на ${this.state.turn.firstLetter}`});
       this.runTimer();
     }
   }
@@ -130,16 +138,36 @@ class App extends Component {
     // return turnScore;
   }
   
+  validateFirstLetter(firstLetter) {
+    if (firstLetter === this.state.turn.firstLetter) return true;
+    
+    if (this.state.turn.firstLetter === 'И' || this.state.turn.firstLetter === 'Й') {
+      if (firstLetter === 'И' || firstLetter === 'Й') {
+        return true;
+      }
+    }
+    
+    if (this.state.turn.firstLetter === 'Ш' || this.state.turn.firstLetter === 'Щ') {
+      if (firstLetter === 'Ш' || firstLetter === 'Щ') {
+        return true;
+      }
+    }
+    return false;
+  }
+  
   onFormSubmit = (guess) => {
-    this.setState({ message: '' });
+    this.setState({ messageCode: { code: 0, value: null }});
     const cityOptions = this.formatGuess(guess);
     
     if (this.state.turn.activePlayer === 'human') {
-      if (guess[0].toUpperCase() === this.state.turn.firstLetter) {
-        
+        if (this.validateFirstLetter(guess[0].toUpperCase())) {
         for (let option of cityOptions) {
           if (comp.alreadyPlayed.has(option)) {
-            this.setState({ message: `Город ${option} уже был сыгран в этом матче. Повторяться нельзя!`});
+            this.setState({ messageCode: { 
+              code: 1,
+              value: option
+            }});
+            // this.setState({ messageCode: `Город ${option} уже был сыгран в этом матче. Повторяться нельзя!`});
             return;
           } else if (comp.checkUserInput(option)) {
             clearInterval(this.timer);
@@ -147,9 +175,17 @@ class App extends Component {
             return option;
           } 
         }
-        this.setState({ message: `Не знаю города ${guess}!`});
+        this.setState({ messageCode: { 
+          code: 2,
+          value: guess
+        }});
+        
+        // this.setState({ messageCode: `Не знаю города ${guess}!`});
       } else {
-        this.setState({ message: 'Город должен начинаться на букву ' + this.state.turn.firstLetter });
+        this.setState({ messageCode: { 
+          code: 3,
+          value: this.state.turn.firstLetter
+        }});
       }
     }
   }
@@ -161,18 +197,9 @@ class App extends Component {
     await this.setState({ gameEnded: false });
     await this.setState({ playedCities: [] });
     await this.setState({ turnNumber: 0 });
-    await this.setState({ 
-      score: {
-        human: 0,
-        computer: 0
-      } 
-    });
-    await this.setState({
-      turn: {
-        activePlayer: 'computer',
-        firstLetter: ''
-      }
-    })
+    await this.setState({ score: { human: 0, computer: 0 }});
+    await this.setState({ turn: { activePlayer: 'computer', firstLetter: '' }});
+    await this.setState({ messageCode: { code: 0, value: null }});
     this.makeTurn('computer');
   }
   
@@ -182,7 +209,7 @@ class App extends Component {
         <Modal gameStarted={this.state.gameStarted} gameEnded={this.state.gameEnded} score={this.state.score} onButtonClick={this.onButtonClick}/>
         <Scorebar turn={this.state.turnNumber} score={this.state.score} timeLeft={this.state.timeLeft}/>
         <TurnsList turn={this.state.turn} turnNumber={this.state.turnNumber} playedCities={this.state.playedCities} gameEnded={this.state.gameEnded} />
-        <UserInput firstLetter={this.state.turn.firstLetter} player={this.state.turn.activePlayer} message={this.state.message} gameEnded={this.state.gameEnded} onSubmit={this.onFormSubmit}/>
+        <UserInput firstLetter={this.state.turn.firstLetter} player={this.state.turn.activePlayer} messageCode={this.state.messageCode} gameEnded={this.state.gameEnded} onSubmit={this.onFormSubmit}/>
       </div>
     );
   }
