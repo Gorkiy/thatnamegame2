@@ -14,3 +14,11 @@
   box-shadow: -3px 5px 0 0 rgba(52,50,250,0.15);
   border-radius: 3px;
 }
+
+@media (min-width: 768px) {
+  .turns {
+    margin: 0 auto 10px;
+    padding-top: 10px;
+    width: 80%;
+  }
+}

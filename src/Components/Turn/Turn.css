@@ -76,3 +76,51 @@
   text-align: center;
   color: #FFFFFF;
 }
+
+@media (min-width: 768px) {
+  .turns__item {
+    min-height: 102px;
+  }
+
+  .turns__wrapper {
+    padding: 25px 0;
+  }
+
+  .turns__number {
+    font-size: 12px;
+  }
+
+  .turns__city {
+    font-size: 24px;
+  }
+
+  .turns__country {
+    font-size: 14px;
+  }
+
+  .turns__bonus {
+    font-size: 14px;
+  }
+
+  .turns__player {
+    width: 56px;
+    height: 56px;
+  }
+
+  .turns__player--computer {
+    background-size: 32px;
+  }
+
+  .turns__player--human {
+    background-size: 28px;
+  }
+
+  .turns__score {
+    padding-top: 4px;
+    top: 12px;
+    right: 12px;
+    width: 28px;
+    height: 28px;
+    font-size: 18px;
+  }
+}

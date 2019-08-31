@@ -1,12 +1,15 @@
-.scorebar {
+.scorebar-wrapper {
   z-index: 1;
+  width: 100%;
+  background: #3432FA;
+  box-shadow: -7px 8px 0 0 rgba(52,50,250,0.39);
+}
+
+.scorebar {
   margin: 0 auto;
   padding: 5px;
   display: flex;
   justify-content: flex-end;
-  width: 100%;
-  background: #3432FA;
-  box-shadow: -7px 8px 0 0 rgba(52,50,250,0.39);
 }
 
 .scorebar__item {
@@ -46,7 +49,6 @@
 .scorebar__value--score {
   position: relative;
   width: 50%;
-  /* border: 1px solid red; */
 }
 
 .scorebar__value--human {
@@ -63,7 +65,6 @@
 .scorebar__value--computer::before {
   content: "";
   position: absolute;
-  /* top: 1px; */
   width: 40px;
   height: 40px;
   background-color: rgba(253, 138, 46, 0.1);
@@ -84,9 +85,56 @@
   background-image: url("../Turn/computer.svg");
 }
 
-.scorebar__title {
+.scorebar__caption {
   display: inline-block;
-  font-family: Montserrat-Regular;
   font-size: 11px;
   color: rgba(255, 255, 255, 0.8);
+}
+
+@media (min-width: 768px) {
+  .scorebar {
+    width: 80%;
+    padding: 15px;
+  }
+  
+  .scorebar__item {
+    width: 30%;
+  }
+
+  .scorebar__item--score {
+    width: 70%;
+  }
+  
+  .scorebar__value {
+    font-size: 38px;
+  }
+  
+  .scorebar__value--human::after,
+  .scorebar__value--computer::before {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .scorebar__value--human::after {
+    right: 3px;
+    background-size: 26px;
+  }
+
+  .scorebar__value--computer::before {
+    left: 3px;
+    background-size: 30px;
+  }
+
+  .scorebar__value--human {
+    padding-right: 65px;
+  }
+
+  .scorebar__value--computer {
+    padding-left: 65px;
+  }
+  
+  .scorebar__caption {
+    font-size: 12px;
+  }
+  
 }

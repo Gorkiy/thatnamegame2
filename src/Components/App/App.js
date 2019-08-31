@@ -3,6 +3,7 @@ import UserInput from '../UserInput/UserInput';
 import Modal from '../Modal/Modal';
 import Scorebar from '../Scorebar/Scorebar';
 import TurnsList from '../TurnsList/TurnsList';
+import Message from '../Message/Message';
 import Computer from '../../Utils/Computer';
 import './App.css';
 
@@ -32,7 +33,8 @@ class App extends Component {
     messageCode: {
       code: 0,
       value: null
-    }
+    },
+    isAccepted: false
   }
 
   async makeTurn(player) {
@@ -45,10 +47,12 @@ class App extends Component {
             this.incrementScore('computer', answer.size);
             this.updateGameState('computer', answer);
             this.setState({ turnNumber: this.state.turnNumber + 1 });
+            this.setState({ isAccepted: false });
           }.bind(this), 2000)
         );
       });
     } else if (player === 'human') {
+      this.setState({ isAccepted: true });
       const recentTurn = comp.recentTurn.city;
       await this.incrementScore('human', recentTurn.size);
       await this.updateGameState('human', recentTurn);
@@ -73,8 +77,6 @@ class App extends Component {
         code: 3,
         value: this.state.turn.firstLetter
       }});
-      
-      // this.setState({ messageCode: `Нужно сыграть любой город на ${this.state.turn.firstLetter}`});
       this.runTimer();
     }
   }
@@ -135,7 +137,6 @@ class App extends Component {
     }
     this.setState({ turnScore });
     this.setState({ score });
-    // return turnScore;
   }
   
   validateFirstLetter(firstLetter) {
@@ -155,6 +156,12 @@ class App extends Component {
     return false;
   }
   
+  resetMessageCode(ms) {
+    setTimeout(function() {
+      this.setState({ messageCode: { code: 0, value: null }});
+    }.bind(this), ms);
+  }
+  
   onFormSubmit = (guess) => {
     this.setState({ messageCode: { code: 0, value: null }});
     const cityOptions = this.formatGuess(guess);
@@ -167,7 +174,6 @@ class App extends Component {
               code: 1,
               value: option
             }});
-            // this.setState({ messageCode: `Город ${option} уже был сыгран в этом матче. Повторяться нельзя!`});
             return;
           } else if (comp.checkUserInput(option)) {
             clearInterval(this.timer);
@@ -179,8 +185,6 @@ class App extends Component {
           code: 2,
           value: guess
         }});
-        
-        // this.setState({ messageCode: `Не знаю города ${guess}!`});
       } else {
         this.setState({ messageCode: { 
           code: 3,
@@ -191,7 +195,6 @@ class App extends Component {
   }
   
   onButtonClick = async () => {
-    //Reset setting and init new game
     comp = new Computer('ru');
     await this.setState({ gameStarted: true });
     await this.setState({ gameEnded: false });
@@ -208,7 +211,8 @@ class App extends Component {
       <div className="game-wrapper">
         <Modal gameStarted={this.state.gameStarted} gameEnded={this.state.gameEnded} score={this.state.score} onButtonClick={this.onButtonClick}/>
         <Scorebar turn={this.state.turnNumber} score={this.state.score} timeLeft={this.state.timeLeft}/>
-        <TurnsList turn={this.state.turn} turnNumber={this.state.turnNumber} playedCities={this.state.playedCities} gameEnded={this.state.gameEnded} />
+        <TurnsList turn={this.state.turn} turnNumber={this.state.turnNumber} playedCities={this.state.playedCities} gameEnded={this.state.gameEnded}/>
+        <Message messageCode={this.state.messageCode} gameEnded={this.state.gameEnded} isAccepted={this.state.isAccepted}/>
         <UserInput firstLetter={this.state.turn.firstLetter} player={this.state.turn.activePlayer} messageCode={this.state.messageCode} gameEnded={this.state.gameEnded} onSubmit={this.onFormSubmit}/>
       </div>
     );
