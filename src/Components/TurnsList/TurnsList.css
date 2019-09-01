@@ -1,6 +1,11 @@
+/* .turns-wrapper {
+  overflow-y: scroll;
+  margin-bottom: 20px;
+} */
+
 .turns {
-  margin: 0;
-  margin-bottom: 15px;
+  /* margin: 0; */
+  /* margin-bottom: 45px; */
   padding: 0;
   overflow-y: scroll;
   /* height: 80vh; */
@@ -19,7 +24,7 @@
 
 @media (min-width: 768px) {
   .turns {
-    margin: 0 auto 10px;
+    margin: 0 auto 15px;
     padding-top: 10px;
     width: 80%;
   }

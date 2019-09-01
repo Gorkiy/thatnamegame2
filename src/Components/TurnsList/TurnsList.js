@@ -8,9 +8,11 @@ class TurnsList extends Component {
     this.listRef = React.createRef();
   }
   
-  componentDidUpdate() {
-    const list = this.listRef.current;
-    list.scrollTop = list.scrollHeight;
+  componentDidUpdate(prevProps) {
+    if (prevProps.turnNumber !== this.props.turnNumber) {
+      const list = this.listRef.current;
+      list.scrollTop = list.scrollHeight;
+    }
   }
   
   renderTurns() {  

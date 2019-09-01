@@ -50,35 +50,46 @@ class Computer {
   }
   
   checkUserInput(guess) {
-    console.log(this.data);
-    console.log('Checking ' + guess);
     const firstLetter = guess[0].toUpperCase();
     
-    for (let cityObj of this.data.bigCities[firstLetter]) {
-      if (cityObj.city.toLowerCase() === guess.toLowerCase()) {
-        this.recentTurn = {
-          city: cityObj,
-          lastLetter: this.defineLastLetter(cityObj.city)
-        }
-        this.deleteCity(cityObj);
-        console.log('big city');
-        return true;
-      }
-    }
-    
-    for (let cityObj of this.data.cities[firstLetter]) {
-      if (cityObj.city.toLowerCase() === guess.toLowerCase()) {
-        this.recentTurn = {
-          city: cityObj,
-          lastLetter: this.defineLastLetter(cityObj.city)
-        }
-        this.deleteCity(cityObj);
-        console.log('small city');
-        return true;
-      }
-    }
-    console.log('false works. WTF');
+    if (this.checkMatch(this.data.bigCities[firstLetter], guess)) return true;
+    if (this.checkMatch(this.data.cities[firstLetter], guess)) return true;
     return false;
+    
+    // for (let cityObj of this.data.bigCities[firstLetter]) {
+    //   if (cityObj.city.toLowerCase() === guess.toLowerCase()) {
+    //     this.recentTurn = {
+    //       city: cityObj,
+    //       lastLetter: this.defineLastLetter(cityObj.city)
+    //     }
+    //     this.deleteCity(cityObj);
+    //     return true;
+    //   }
+    // }
+    // 
+    // for (let cityObj of this.data.cities[firstLetter]) {
+    //   if (cityObj.city.toLowerCase() === guess.toLowerCase()) {
+    //     this.recentTurn = {
+    //       city: cityObj,
+    //       lastLetter: this.defineLastLetter(cityObj.city)
+    //     }
+    //     this.deleteCity(cityObj);
+    //     return true;
+    //   }
+    // }
+  }
+  
+  checkMatch(dataOnLetter, guess) {
+    for (let cityObj of dataOnLetter) {
+      if (cityObj.city.toLowerCase() === guess.toLowerCase()) {
+        this.recentTurn = {
+          city: cityObj,
+          lastLetter: this.defineLastLetter(cityObj.city)
+        }
+        this.deleteCity(cityObj);
+        return true;
+      }
+    }
   }
   
   deleteCity(cityData) {
@@ -113,8 +124,7 @@ class Computer {
   
   getRandomIndex(arr) {
     return Math.floor(Math.random() * (arr.length - 1));
-  }
-  
+  }  
 }
 
 export default Computer;

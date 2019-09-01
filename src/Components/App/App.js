@@ -9,7 +9,7 @@ import './App.css';
 
 let comp = new Computer('ru');
 const gameConfig = {
-  turnLimit: 10,
+  turnLimit: 30,
   cityValue: {'0': 3, '1': 1, '2': 2}
 }
 
