@@ -9,7 +9,7 @@ import './App.css';
 
 let comp = new Computer('ru');
 const gameConfig = {
-  turnLimit: 30,
+  turnLimit: 10,
   cityValue: {'0': 3, '1': 1, '2': 2}
 }
 
@@ -165,26 +165,29 @@ class App extends Component {
   onFormSubmit = (guess) => {
     this.setState({ messageCode: { code: 0, value: null }});
     const cityOptions = this.formatGuess(guess);
+    console.log(cityOptions);
     
     if (this.state.turn.activePlayer === 'human') {
         if (this.validateFirstLetter(guess[0].toUpperCase())) {
-        for (let option of cityOptions) {
-          if (comp.alreadyPlayed.has(option)) {
-            this.setState({ messageCode: { 
-              code: 1,
-              value: option
-            }});
-            return;
-          } else if (comp.checkUserInput(option)) {
-            clearInterval(this.timer);
-            this.makeTurn('human');
-            return option;
-          } 
-        }
-        this.setState({ messageCode: { 
-          code: 2,
-          value: guess
-        }});
+          for (let option of cityOptions) {
+            if (comp.alreadyPlayed.has(option)) {
+              this.setState({ messageCode: { 
+                code: 1,
+                value: option
+              }});
+              return;
+            } else if (comp.checkUserInput(option)) {
+              // console.log(option);
+              // console.log(comp.checkUserInput(option));
+              clearInterval(this.timer);
+              this.makeTurn('human');
+              return option;
+            } 
+          }
+          this.setState({ messageCode: { 
+            code: 2,
+            value: guess
+          }});
       } else {
         this.setState({ messageCode: { 
           code: 3,

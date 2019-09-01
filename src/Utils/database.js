@@ -1,6 +1,6 @@
-const citiesData = require('./cities-ru.json');
+export const citiesData = require('./cities-ru.json');
 
-function initialDataPrepare(data) {
+export function initialDataPrepare(data) {
   const cities = [];
   const bigCities = [];
   
@@ -23,6 +23,3 @@ function initialDataPrepare(data) {
   })
   return { bigCities, cities };
 }
-
-const citiesRU = initialDataPrepare(citiesData);
-export default citiesRU;

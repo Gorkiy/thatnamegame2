@@ -1,4 +1,6 @@
-import citiesRU from './database';
+import { citiesData, initialDataPrepare} from './database';
+
+const citiesRU = initialDataPrepare(citiesData);
 // size: 0 — Capital
 // size: 1 - Small or medium city
 // size: 2 — Big city (> 1m population)
@@ -7,7 +9,7 @@ const FORBIDDEN_LETTERS = ['ь', 'ъ', 'ы', 'ф'];
 
 class Computer {
   constructor(lang) {
-    this.data = citiesRU;
+    this.data = initialDataPrepare(citiesData);
     this.alreadyPlayed = new Set();
     this.recentTurn = {
       city: {},
@@ -48,6 +50,8 @@ class Computer {
   }
   
   checkUserInput(guess) {
+    console.log(this.data);
+    console.log('Checking ' + guess);
     const firstLetter = guess[0].toUpperCase();
     
     for (let cityObj of this.data.bigCities[firstLetter]) {
@@ -57,6 +61,7 @@ class Computer {
           lastLetter: this.defineLastLetter(cityObj.city)
         }
         this.deleteCity(cityObj);
+        console.log('big city');
         return true;
       }
     }
@@ -68,9 +73,11 @@ class Computer {
           lastLetter: this.defineLastLetter(cityObj.city)
         }
         this.deleteCity(cityObj);
+        console.log('small city');
         return true;
       }
     }
+    console.log('false works. WTF');
     return false;
   }
   
