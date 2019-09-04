@@ -9,7 +9,7 @@ import './App.css';
 
 let comp = new Computer('ru');
 const gameConfig = {
-  turnLimit: 60,
+  turnLimit: 10,
   cityValue: {'0': 3, '1': 1, '2': 2}
 }
 
@@ -158,16 +158,6 @@ class App extends Component {
     return false;
   }
   
-  // resetmessage(ms) {
-  //   setTimeout(function() {
-  //     this.setState({ message: { code: 0, value: null, isShown: false }});
-  //   }.bind(this), ms);
-  // }
-  
-  // renderMsg() {
-  //   return <Message message={this.state.message} gameEnded={this.state.gameEnded} isAccepted={this.state.isAccepted}/>
-  // }
-  
   onFormSubmit = (guess) => {
     if (!guess.length) return;
     this.setState({ message: { code: 0, value: null, id: this.state.message.id }});
@@ -217,12 +207,6 @@ class App extends Component {
   }
   
   render() {
-    // { this.state.message.code 
-    //     ? <Message message={this.state.message} gameEnded={this.state.gameEnded} isAccepted={this.state.isAccepted}/>
-    //     : ''
-    //   }
-    
-    
     return (
       <div className="game-wrapper">
         <Modal gameStarted={this.state.gameStarted} gameEnded={this.state.gameEnded} score={this.state.score} onButtonClick={this.onButtonClick}/>

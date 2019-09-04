@@ -12,11 +12,11 @@ class UserInput extends Component {
   componentDidUpdate(prevProps) {
     if (this.props.player === 'human') {
       if (prevProps.player !== this.props.player) {
+        this.inputRef.current.disabled = false;
+        this.buttonRef.current.disabled = false;
+        if (!this.props.gameEnded) this.inputRef.current.focus();
         this.setState({ guess: this.props.firstLetter });
       }
-      this.inputRef.current.disabled = false;
-      this.buttonRef.current.disabled = false;
-      if (!this.props.gameEnded) this.inputRef.current.focus();
     } else {
       this.inputRef.current.disabled = true;
       this.buttonRef.current.disabled = true;

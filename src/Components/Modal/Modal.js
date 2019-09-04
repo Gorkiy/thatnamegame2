@@ -4,16 +4,24 @@ import './Modal.css';
 class Modal extends Component {
   constructor(props) {
     super(props);
+    this.state = { isNewRecord: false };
     this.handleClick = this.handleClick.bind(this);
+  }
+  
+  componentDidUpdate(prevProps) {
+    if (prevProps.gameEnded !== this.props.gameEnded && this.props.gameEnded) {
+      if (this.defineRecord()) this.setState({ isNewRecord: true });
+    }
   }
 
   handleClick() {
     this.props.onButtonClick();
+    this.setState({ isNewRecord: false });
   }
   
   getContent() {
-    if (this.props.gameEnded) {      
-      let recordPart = this.defineRecord() ? 'Это, на секундочку, новый рекорд!' : '';
+    if (this.props.gameEnded) {
+      let recordPart = this.state.isNewRecord ? 'Это, на секундочку, новый рекорд!' : '';
       let pointsPart = this.defineWordEnding(this.props.score.human);
 
       return {
@@ -40,12 +48,14 @@ class Modal extends Component {
       localStorage.setItem('bestScore', matchScore);
     } else {
       bestScore = Number(localStorage.getItem('bestScore'));
+      
+      if (matchScore > bestScore) localStorage.setItem('bestScore', matchScore);
     }
     return matchScore > bestScore;
   }
   
   defineWordEnding(num) {
-    if (num % 100 === 11) return 'ов';
+    if (num % 100 >= 11 && num % 100 <= 19) return 'ов';
     if (num % 10 === 1) return '';
     if (num % 10 >= 2 && num % 10 <= 4) return 'а';
     return 'ов';

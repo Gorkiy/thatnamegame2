@@ -13,11 +13,9 @@ const acceptedMessages = [
 class Message extends Component {
   constructor(props) {
     super(props);
-    this.state = { timer: null };
+    this.state = { timer: null, isShown: false };
     this.msgRef = React.createRef();
-    this.isShown = false;
   }
-
 
   componentDidUpdate(prevProps) {
     if (prevProps.message.id !== this.props.message.id) {
@@ -25,9 +23,6 @@ class Message extends Component {
       this.msgRef.current.classList.remove('visually-hidden');
       this.runTimer(this.props.message.id);
     }
-    
-    console.log(prevProps.message.id, this.props.message.id);
-    
   }
   
   runTimer(id) {

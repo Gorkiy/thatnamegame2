@@ -10,10 +10,6 @@ class Turn extends Component {
     }
   }
   
-  componentDidUpdate() {
-    // console.log(this.props.turnScore);
-  }
-  
   renderCountry() {
     if (this.props.city) {
       return this.props.country;
