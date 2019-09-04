@@ -72,5 +72,13 @@
 @media (min-width: 768px) {
   .modal-content {
     width: 450px;
+    
+    padding: 25px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .modal-content {
+    width: 550px;
   }
 }

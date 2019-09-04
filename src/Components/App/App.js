@@ -9,7 +9,7 @@ import './App.css';
 
 let comp = new Computer('ru');
 const gameConfig = {
-  turnLimit: 30,
+  turnLimit: 60,
   cityValue: {'0': 3, '1': 1, '2': 2}
 }
 
@@ -30,9 +30,10 @@ class App extends Component {
     },
     turnScore: null,
     timer: null,
-    messageCode: {
+    message: {
       code: 0,
-      value: null
+      value: null,
+      id: 0
     },
     isAccepted: false
   }
@@ -73,9 +74,10 @@ class App extends Component {
       }
     });    
     if (nextPlayer === 'human') {
-      this.setState({ messageCode: { 
+      this.setState({ message: { 
         code: 3,
-        value: this.state.turn.firstLetter
+        value: this.state.turn.firstLetter,
+        id: this.state.message.id + 1
       }});
       this.runTimer();
     }
@@ -156,42 +158,47 @@ class App extends Component {
     return false;
   }
   
-  resetMessageCode(ms) {
-    setTimeout(function() {
-      this.setState({ messageCode: { code: 0, value: null }});
-    }.bind(this), ms);
-  }
+  // resetmessage(ms) {
+  //   setTimeout(function() {
+  //     this.setState({ message: { code: 0, value: null, isShown: false }});
+  //   }.bind(this), ms);
+  // }
+  
+  // renderMsg() {
+  //   return <Message message={this.state.message} gameEnded={this.state.gameEnded} isAccepted={this.state.isAccepted}/>
+  // }
   
   onFormSubmit = (guess) => {
-    this.setState({ messageCode: { code: 0, value: null }});
+    if (!guess.length) return;
+    this.setState({ message: { code: 0, value: null, id: this.state.message.id }});
     const cityOptions = this.formatGuess(guess);
-    console.log(cityOptions);
     
     if (this.state.turn.activePlayer === 'human') {
         if (this.validateFirstLetter(guess[0].toUpperCase())) {
           for (let option of cityOptions) {
             if (comp.alreadyPlayed.has(option)) {
-              this.setState({ messageCode: { 
+              this.setState({ message: { 
                 code: 1,
-                value: option
+                value: option,
+                id: this.state.message.id + 1
               }});
               return;
             } else if (comp.checkUserInput(option)) {
-              // console.log(option);
-              // console.log(comp.checkUserInput(option));
               clearInterval(this.timer);
               this.makeTurn('human');
               return option;
             } 
           }
-          this.setState({ messageCode: { 
+          this.setState({ message: { 
             code: 2,
-            value: guess
+            value: guess,
+            id: this.state.message.id + 1
           }});
       } else {
-        this.setState({ messageCode: { 
+        this.setState({ message: { 
           code: 3,
-          value: this.state.turn.firstLetter
+          value: this.state.turn.firstLetter,
+          id: this.state.message.id + 1
         }});
       }
     }
@@ -205,18 +212,24 @@ class App extends Component {
     await this.setState({ turnNumber: 0 });
     await this.setState({ score: { human: 0, computer: 0 }});
     await this.setState({ turn: { activePlayer: 'computer', firstLetter: '' }});
-    await this.setState({ messageCode: { code: 0, value: null }});
+    await this.setState({ message: { code: 0, value: null, id: this.state.message.id }});
     this.makeTurn('computer');
   }
   
   render() {
+    // { this.state.message.code 
+    //     ? <Message message={this.state.message} gameEnded={this.state.gameEnded} isAccepted={this.state.isAccepted}/>
+    //     : ''
+    //   }
+    
+    
     return (
       <div className="game-wrapper">
         <Modal gameStarted={this.state.gameStarted} gameEnded={this.state.gameEnded} score={this.state.score} onButtonClick={this.onButtonClick}/>
         <Scorebar turn={this.state.turnNumber} score={this.state.score} timeLeft={this.state.timeLeft}/>
         <TurnsList turn={this.state.turn} turnNumber={this.state.turnNumber} playedCities={this.state.playedCities} gameEnded={this.state.gameEnded}/>
-        <Message messageCode={this.state.messageCode} gameEnded={this.state.gameEnded} isAccepted={this.state.isAccepted}/>
-        <UserInput firstLetter={this.state.turn.firstLetter} player={this.state.turn.activePlayer} messageCode={this.state.messageCode} gameEnded={this.state.gameEnded} onSubmit={this.onFormSubmit}/>
+        <Message message={this.state.message} gameEnded={this.state.gameEnded} isAccepted={this.state.isAccepted}/>
+        <UserInput firstLetter={this.state.turn.firstLetter} player={this.state.turn.activePlayer}  gameEnded={this.state.gameEnded} onSubmit={this.onFormSubmit}/>
       </div>
     );
   }

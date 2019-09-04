@@ -11,7 +11,7 @@
 }
 
 .guess__input {
-  padding: 20px;
+  padding: 20px 85px 20px 20px;
   width: 100%;
   font-family: Montserrat-Regular;
   font-size: 25px;
@@ -26,6 +26,10 @@
   opacity: 0.6;
 }
 
+.guess__input:focus {
+  box-shadow: inset 0 0 0 2px #FFFFFF;
+}
+
 .guess__button {
   position: absolute;
   right: 20px;
@@ -33,6 +37,7 @@
   width: 62px;
   height: 62px;
   border-radius: 50%;
+  outline: none;
   background-image: url("./send.svg");
   background-repeat: no-repeat;
   background-position: center;
@@ -40,6 +45,10 @@
   background-color: #FACC32;
   border: 1px solid #2558D1;
   box-shadow: -4px 4px 0 0 rgba(0,0,0,0.20);
+}
+
+.guess__button:focus {
+  border-color: #FFFFFF;
 }
 
 .guess__button:disabled {
@@ -68,10 +77,8 @@
   }
 
   .guess__input {
-    padding: 30px 30px;
+    padding: 30px 115px 30px 30px;
     font-size: 34px;
-    border: none;
-    outline: none;
   }
 
   .guess__input:disabled {
@@ -86,5 +93,11 @@
     background-size: 32px 32px;
     border: 2px solid #2558D1;
     box-shadow: -6px 6px 0 0 rgba(0,0,0,0.20);
+  }
+}
+
+@media (min-width: 1280px) {
+  .guess__form {
+    width: 700px;
   }
 }

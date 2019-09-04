@@ -136,5 +136,10 @@
   .scorebar__caption {
     font-size: 12px;
   }
-  
+}
+
+@media (min-width: 1280px) {
+  .scorebar {
+    width: 750px;
+  }
 }

@@ -15,34 +15,32 @@ class Message extends Component {
     super(props);
     this.state = { timer: null };
     this.msgRef = React.createRef();
-    
+    this.isShown = false;
   }
 
+
   componentDidUpdate(prevProps) {
+    if (prevProps.message.id !== this.props.message.id) {
+      this.setState({ isShown: true });
+      this.msgRef.current.classList.remove('visually-hidden');
+      this.runTimer(this.props.message.id);
+    }
     
-    // if (this.msgRef.current)  {
-    //   setTimeout(function() {
-    //     this.msgRef.current.classList.add('visually-hidden');
-    //       // this.msgRef.current.remove();
-    //   }.bind(this), 3000);
-    // }
-    // if (prevProps.messageCode.code !== this.props.messageCode.code && this.props.messageCode.code !== 0) {
-    //   this.runTimer();
-    // }
+    console.log(prevProps.message.id, this.props.message.id);
+    
   }
   
-  runTimer() {
-  
+  runTimer(id) {
     this.timer = setTimeout(function() {
+      this.setState({ isShown: false });
       this.msgRef.current.classList.add('visually-hidden');
-  
-      if (this.props.messageCode.code === 0 || this.props.isAccepted) {
+      if (id !== this.props.message.id) {
         clearInterval(this.timer);
+        this.setState({ isShown: true });
         this.msgRef.current.classList.remove('visually-hidden');
       }
     }.bind(this), 5000);
   }
-  
   
   renderMsg() {
     if (this.props.gameEnded) return;
@@ -57,30 +55,30 @@ class Message extends Component {
       }
     }
     
-    if (this.props.messageCode.code) {
-      switch(this.props.messageCode.code) {
+    if (this.props.message.code) {
+      switch(this.props.message.code) {
         case 1:
           msg = <React.Fragment>
-            Город <span className="guess__accent">{this.props.messageCode.value}</span> уже был сыгран в этом матче.
+            Город <span className="guess__accent">{this.props.message.value}</span> уже был сыгран в этом матче.
           </React.Fragment>
           break;
         case 2:
           msg = <React.Fragment>
-            Не знаю города <span className="guess__accent">{this.props.messageCode.value}</span>
+            Не знаю города <span className="guess__accent">{this.props.message.value}</span>
           </React.Fragment>
           break;
         case 3:
           let lastLetters = [];
-          if (this.props.messageCode.value === 'И' || this.props.messageCode.value === 'Й') {
+          if (this.props.message.value === 'И' || this.props.message.value === 'Й') {
             lastLetters = ['И', 'Й'];
           }
-          if (this.props.messageCode.value === 'Ш' || this.props.messageCode.value === 'Щ') {
+          if (this.props.message.value === 'Ш' || this.props.message.value === 'Щ') {
             lastLetters = ['Ш', 'Щ'];
           }
           
           if (!lastLetters.length) {
             msg = <React.Fragment>
-              Нужно сыграть город на <span className="guess__accent">{this.props.messageCode.value}</span>
+              Нужно сыграть город на <span className="guess__accent">{this.props.message.value}</span>
             </React.Fragment>
           } else {
             
@@ -94,18 +92,6 @@ class Message extends Component {
       }
       
       messageElement = <p className="guess__message">{msg}</p>;
-      // this.msgRef.current.classList.add('123');
-      // console.log(this.msgRef.current);
-      
-      // setTimeout(function() {
-      //   messageElement.remove();
-      // }.bind(this), 3000);
-      // this.msgRef.current.classList.remove('visually-hidden');
-      // clearInterval(this.timer);
-      
-      
-      // this.runTimer();
-      
       return messageElement;
     }
   }

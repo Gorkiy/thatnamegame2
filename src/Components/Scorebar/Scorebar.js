@@ -7,10 +7,6 @@ class Scorebar extends Component {
     return Math.floor((this.props.turn) / 2);
   }
   
-  componentDidUpdate() {
-    // console.log(this.props.score);
-  }
-  
   render() {
     return (
       <div className="scorebar-wrapper">
