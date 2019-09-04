@@ -4,8 +4,9 @@
   "private": true,
   "homepage": "https://gorkiy.github.io/thatnamegame2",
   "dependencies": {
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6",
+    "eslint-utils": "^1.4.2",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0",
     "react-scripts": "3.0.1"
   },
   "scripts": {
