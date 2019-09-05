@@ -5,6 +5,9 @@ import './TurnsList.css';
 class TurnsList extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      loading: true
+    };
     this.listRef = React.createRef();
   }
   
@@ -21,7 +24,7 @@ class TurnsList extends Component {
     });
     
     if (!this.props.gameEnded) {
-      let currentTurn = <Turn key={this.props.turnNumber + 1} turnNumber={this.props.turnNumber} firstLetter={this.props.turn.firstLetter} player={this.props.turn.activePlayer} blank={true} />;
+      let currentTurn = <Turn key={this.props.turnNumber + 1} turnNumber={this.props.turnNumber} firstLetter={this.props.turn.firstLetter} player={this.props.turn.activePlayer} blank={true} />
       turns.push(currentTurn);
     }
     
@@ -32,6 +35,7 @@ class TurnsList extends Component {
     return (
       <ul ref={this.listRef} className="turns">
         {this.renderTurns()}
+        
       </ul>
     );
   }

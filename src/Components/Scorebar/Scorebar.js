@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './Scorebar.css';
 
 class Scorebar extends Component {  
+  
   calcUserTurn() {
     if (this.props.turn <= 1) return 0;
     return Math.floor((this.props.turn) / 2);

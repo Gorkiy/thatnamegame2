@@ -10,7 +10,7 @@ class UserInput extends Component {
   }
   
   componentDidUpdate(prevProps) {
-    if (this.props.player === 'human') {
+    if (this.props.player === 'human' && !this.props.gameEnded) {
       if (prevProps.player !== this.props.player) {
         this.inputRef.current.disabled = false;
         this.buttonRef.current.disabled = false;
@@ -23,6 +23,7 @@ class UserInput extends Component {
     }
     
     if (prevProps.gameEnded !== this.props.gameEnded && this.props.gameEnded) {
+      console.log('here');
       this.inputRef.current.blur();
       this.setState({ guess: '' });
       this.inputRef.current.disabled = true;

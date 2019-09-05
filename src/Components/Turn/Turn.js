@@ -1,10 +1,32 @@
 import React, { Component } from 'react';
+// import { css } from '@emotion/core';
+import { PulseLoader } from 'react-spinners';
 import './Turn.css';
 
-class Turn extends Component {  
+class Turn extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      loading: true
+    }
+  }
+  
   renderCity() {
     if (!this.props.city) {
-      return this.props.firstLetter + '...' || '...'
+      return (
+        <div className="turns__spinner-wrapper">
+          { this.props.firstLetter ? <span className="turns__first-letter">{this.props.firstLetter}</span> : '' }
+          <span className="turns__spinner">
+            <PulseLoader
+            margin={"3px"}
+            sizeUnit={"4px"}
+            size={0}
+            color={'#FD8A2E'}
+            loading={this.state.loading}
+            />
+          </span>
+        </div>
+      )
     } else {
       return this.props.city;
     }

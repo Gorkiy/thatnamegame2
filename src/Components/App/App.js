@@ -91,6 +91,7 @@ class App extends Component {
       if (this.state.timeLeft <= 0) {
         clearInterval(this.timer);
         this.setState({ gameEnded: true});
+        this.setState({ gameStarted: false});
       }
     }.bind(this), 1000);
   }
@@ -212,7 +213,7 @@ class App extends Component {
         <Modal gameStarted={this.state.gameStarted} gameEnded={this.state.gameEnded} score={this.state.score} onButtonClick={this.onButtonClick}/>
         <Scorebar turn={this.state.turnNumber} score={this.state.score} timeLeft={this.state.timeLeft}/>
         <TurnsList turn={this.state.turn} turnNumber={this.state.turnNumber} playedCities={this.state.playedCities} gameEnded={this.state.gameEnded}/>
-        <Message message={this.state.message} gameEnded={this.state.gameEnded} isAccepted={this.state.isAccepted}/>
+        { !this.state.gameEnded ? <Message message={this.state.message} gameEnded={this.state.gameEnded} isAccepted={this.state.isAccepted}/> : '' }
         <UserInput firstLetter={this.state.turn.firstLetter} player={this.state.turn.activePlayer}  gameEnded={this.state.gameEnded} onSubmit={this.onFormSubmit}/>
       </div>
     );
