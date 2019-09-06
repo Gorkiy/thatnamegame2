@@ -44,19 +44,9 @@
   display: flex;
 }
 
-.turns__first-letter {
-  /* display: inline-block; */
-}
-
 .turns__spinner {
   margin-top: 3px;
   margin-left: 2px;
-  /* display: inline-block; */
-  /* margin: 25px; */
-  /* vertical-align: bottom; */
-  /* display: inline-block; */
-  /* border: 1px solid red; */
-  /* width: 500px; */
 }
 
 .turns__country {
