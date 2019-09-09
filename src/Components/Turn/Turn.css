@@ -65,6 +65,10 @@
 }
 
 .turns__country {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 150px;
   margin-top: 3px;
   font-size: 12px;
   color: #737373;
@@ -72,6 +76,7 @@
 }
 
 .turns__bonus {
+  display: none;
   margin-left: 4px;
   font-size: 12px;
   color: #FD8A2E;
@@ -111,6 +116,16 @@
   color: #FFFFFF;
 }
 
+@media (min-width: 375px) {
+  .turns__country {
+    max-width: 120px;
+  }
+  
+  .turns__bonus {
+    display: inline-block;
+  }
+}
+
 @media (min-width: 768px) {
   .turns__item {
     min-height: 102px;
@@ -131,6 +146,7 @@
 
   .turns__country {
     font-size: 14px;
+    max-width: 100%;
   }
 
   .turns__bonus {

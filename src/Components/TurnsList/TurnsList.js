@@ -23,7 +23,7 @@ class TurnsList extends Component {
       return <Turn key={cityObj.turnNumber} turnNumber={cityObj.turnNumber} turnScore={cityObj.turnScore} city={cityObj.city} size={cityObj.size} country={cityObj.country} player={cityObj.player} />;
     });
     
-    if (!this.props.gameEnded) {
+    if (this.props.gameStarted && !this.props.gameEnded) {
       let currentTurn = <Turn key={this.props.turnNumber + 1} turnNumber={this.props.turnNumber} firstLetter={this.props.turn.firstLetter} player={this.props.turn.activePlayer} blank={true} />
       turns.push(currentTurn);
     }

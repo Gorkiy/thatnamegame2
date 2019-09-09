@@ -20,7 +20,9 @@
   margin: 0;
   padding: 0;
   height: auto;
-  max-height: fill-available;
+  max-height: -webkit-fill-available;
+  max-height: -moz-available;
+  max-height: stretch;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -42,5 +44,8 @@
 @media (min-width: 1280px) {
   .turns__container {
     width: 700px;
+    -webkit-box-pack: start;
+        -ms-flex-pack: start;
+            justify-content: flex-start;
   }
 }

@@ -212,7 +212,7 @@ class App extends Component {
       <div className="game-wrapper">
         <Modal gameStarted={this.state.gameStarted} gameEnded={this.state.gameEnded} score={this.state.score} onButtonClick={this.onButtonClick}/>
         <Scorebar turn={this.state.turnNumber} score={this.state.score} timeLeft={this.state.timeLeft}/>
-        <TurnsList turn={this.state.turn} turnNumber={this.state.turnNumber} playedCities={this.state.playedCities} gameEnded={this.state.gameEnded}/>
+        <TurnsList turn={this.state.turn} turnNumber={this.state.turnNumber} playedCities={this.state.playedCities} gameStarted={this.state.gameStarted} gameEnded={this.state.gameEnded}/>
         { !this.state.gameEnded ? <Message message={this.state.message} gameEnded={this.state.gameEnded} isAccepted={this.state.isAccepted}/> : '' }
         <UserInput firstLetter={this.state.turn.firstLetter} player={this.state.turn.activePlayer}  gameEnded={this.state.gameEnded} onSubmit={this.onFormSubmit}/>
       </div>
