@@ -1,23 +1,36 @@
 .turns__item {
-  margin: 15px;
+  /* margin: 15px; */
+  margin: 7px 0;
   padding: 0 20px;
   position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   min-height: 72px;
   background: #FFFFFF;
   border: 1px solid #6564F8;
-  box-shadow: -3px 5px 0 0 rgba(52,50,250,0.15);
+  -webkit-box-shadow: -3px 5px 0 0 rgba(52,50,250,0.15);
+          box-shadow: -3px 5px 0 0 rgba(52,50,250,0.15);
   border-radius: 3px;
   font-family: "Montserrat";
 }
 
-.turns__wrapper {
+.turns__city-wrapper {
   width: 80%;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -webkit-box-align: baseline;
+      -ms-flex-align: baseline;
+          align-items: baseline;
   padding: 15px 0;
 }
 
@@ -41,6 +54,8 @@
 }
 
 .turns__spinner-wrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
 }
 
@@ -99,6 +114,7 @@
 @media (min-width: 768px) {
   .turns__item {
     min-height: 102px;
+    margin: 10px 0;
   }
 
   .turns__wrapper {

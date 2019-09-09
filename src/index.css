@@ -21,19 +21,10 @@ img {
 
 body {
   margin: 0;
+  padding: 0;
   font-family: "Montserrat", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-size: 14px;
   background-color: #D8D8F2;
 }
-
-/* ::-webkit-scrollbar {
-  -webkit-appearance: none;
-  width: 7px;
-}
-::-webkit-scrollbar-thumb {
-  border-radius: 4px;
-  background-color: rgba(0, 0, 0, .5);
-  -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, .5);
-} */

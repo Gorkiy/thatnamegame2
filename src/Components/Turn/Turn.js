@@ -70,7 +70,7 @@ class Turn extends Component {
   render() {
     return (
       <li className="turns__item">
-        <div className="turns__wrapper">
+        <div className="turns__city-wrapper">
           <span className="turns__number">
             {this.renderTurnNumber(this.props.turnNumber)}
           </span>

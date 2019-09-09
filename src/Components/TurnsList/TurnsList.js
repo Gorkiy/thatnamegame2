@@ -33,10 +33,11 @@ class TurnsList extends Component {
   
   render() {
     return (
-      <ul ref={this.listRef} className="turns">
-        {this.renderTurns()}
-        
+      <div className="turns__container" ref={this.listRef}>
+        <ul className="turns">
+          {this.renderTurns()}
       </ul>
+      </div>
     );
   }
 }
