@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/thatnamegame2/static/css/main.af7f5cc1.chunk.css",
+    "main.css": "/thatnamegame2/static/css/main.7e74b9fb.chunk.css",
     "main.js": "/thatnamegame2/static/js/main.30bc62c8.chunk.js",
     "main.js.map": "/thatnamegame2/static/js/main.30bc62c8.chunk.js.map",
     "runtime~main.js": "/thatnamegame2/static/js/runtime~main.0d79686e.js",
@@ -8,9 +8,9 @@
     "static/js/2.b7260df4.chunk.js": "/thatnamegame2/static/js/2.b7260df4.chunk.js",
     "static/js/2.b7260df4.chunk.js.map": "/thatnamegame2/static/js/2.b7260df4.chunk.js.map",
     "index.html": "/thatnamegame2/index.html",
-    "precache-manifest.969d31bb7df28f266cd777a543c739da.js": "/thatnamegame2/precache-manifest.969d31bb7df28f266cd777a543c739da.js",
+    "precache-manifest.8d10c4b472a9aedd218a166778680fb4.js": "/thatnamegame2/precache-manifest.8d10c4b472a9aedd218a166778680fb4.js",
     "service-worker.js": "/thatnamegame2/service-worker.js",
-    "static/css/main.af7f5cc1.chunk.css.map": "/thatnamegame2/static/css/main.af7f5cc1.chunk.css.map",
+    "static/css/main.7e74b9fb.chunk.css.map": "/thatnamegame2/static/css/main.7e74b9fb.chunk.css.map",
     "static/media/Turn.css": "/thatnamegame2/static/media/human.df711d81.svg",
     "static/media/UserInput.css": "/thatnamegame2/static/media/send.36c94dcb.svg"
   }
