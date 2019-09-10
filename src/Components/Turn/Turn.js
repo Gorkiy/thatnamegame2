@@ -1,13 +1,44 @@
 import React, { Component } from 'react';
-// import { css } from '@emotion/core';
 import { PulseLoader } from 'react-spinners';
+import posed from 'react-pose';
 import './Turn.css';
+
+const TurnItem = posed.li({
+  enter: {
+    rotateY: 0,
+    opacity: 1,
+    delay: 0,
+    transition: {
+      y: { type: 'spring', stiffness: 1000, damping: 15 },
+      default: { duration: 500 }
+    }
+  },
+  exit: {
+    rotateY: -180,
+    opacity: 0,
+    transition: { duration: 500 }
+  }
+});
 
 class Turn extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isVisible: false,
       loading: true
+    }
+    this.timer = null;
+  }
+  
+  componentDidMount() {
+    this.timer = setTimeout(() => {
+      this.setState({ isVisible: true });
+    }, 200);
+  }
+  
+  componentWillUnmount() {
+    if (this.timer) {
+      clearInterval(this.timer);
     }
   }
   
@@ -68,8 +99,11 @@ class Turn extends Component {
   }
 
   render() {
+    const { isVisible } = this.state;
+    
     return (
-      <li className="turns__item">
+      <TurnItem className="turns__item" pose={isVisible ? 'enter' : 'exit'}>
+      
         <div className="turns__city-wrapper">
           <span className="turns__number">
             {this.renderTurnNumber(this.props.turnNumber)}
@@ -87,8 +121,8 @@ class Turn extends Component {
         <div className={ `turns__player turns__player--${this.props.player}` }>
         </div>
         {this.renderScore()}
-        
-      </li>
+      
+      </TurnItem>
     )
   }
 }

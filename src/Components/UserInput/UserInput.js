@@ -23,7 +23,6 @@ class UserInput extends Component {
     }
     
     if (prevProps.gameEnded !== this.props.gameEnded && this.props.gameEnded) {
-      console.log('here');
       this.inputRef.current.blur();
       this.setState({ guess: '' });
       this.inputRef.current.disabled = true;

@@ -5,9 +5,7 @@ import './TurnsList.css';
 class TurnsList extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      loading: true
-    };
+    this.state = { isVisible: false };
     this.listRef = React.createRef();
   }
   
@@ -19,14 +17,18 @@ class TurnsList extends Component {
   }
   
   renderTurns() {  
+    const played = this.props.playedCities;
+    const lastTurn = played.length ? played[played.length - 1].turnNumber + 1 : 1;
+    
     const turns = this.props.playedCities.map(cityObj => {
       return <Turn key={cityObj.turnNumber} turnNumber={cityObj.turnNumber} turnScore={cityObj.turnScore} city={cityObj.city} size={cityObj.size} country={cityObj.country} player={cityObj.player} />;
     });
     
     if (this.props.gameStarted && !this.props.gameEnded) {
-      let currentTurn = <Turn key={this.props.turnNumber + 1} turnNumber={this.props.turnNumber} firstLetter={this.props.turn.firstLetter} player={this.props.turn.activePlayer} blank={true} />
+      let currentTurn = <Turn key={lastTurn} turnNumber={this.props.turnNumber} firstLetter={this.props.turn.firstLetter} player={this.props.turn.activePlayer} blank={true} />
       turns.push(currentTurn);
     }
+    console.log(turns);
     
     return turns;
   }
@@ -36,7 +38,7 @@ class TurnsList extends Component {
       <div className="turns__container" ref={this.listRef}>
         <ul className="turns">
           {this.renderTurns()}
-      </ul>
+        </ul>
       </div>
     );
   }
