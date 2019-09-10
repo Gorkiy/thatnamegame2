@@ -40,7 +40,7 @@ class Turn extends Component {
   
   componentWillUnmount() {
     if (this.timer) {
-      clearInterval(this.timer);
+      clearTimeout(this.timer);
     }
   }
   
@@ -105,7 +105,6 @@ class Turn extends Component {
     
     return (
       <TurnItem className="turns__item" pose={isVisible ? 'enter' : 'exit'}>
-      
         <div className="turns__city-wrapper">
           <span className="turns__number">
             {this.renderTurnNumber(this.props.turnNumber)}
@@ -123,7 +122,6 @@ class Turn extends Component {
         <div className={ `turns__player turns__player--${this.props.player}` }>
         </div>
         {this.renderScore()}
-      
       </TurnItem>
     )
   }
