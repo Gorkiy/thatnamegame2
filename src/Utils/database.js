@@ -1,4 +1,5 @@
 export const citiesData = require('./cities-ru.json');
+export const cityAliases = require('./cityAliases-ru.json');
 
 export function initialDataPrepare(data) {
   const cities = [];

@@ -1,4 +1,4 @@
-import { citiesData, initialDataPrepare} from './database';
+import { citiesData, initialDataPrepare, cityAliases} from './database';
 
 const citiesRU = initialDataPrepare(citiesData);
 // size: 0 — Capital
@@ -51,32 +51,12 @@ class Computer {
   
   checkUserInput(guess) {
     const firstLetter = guess[0].toUpperCase();
+    const isAlias = this.checkAlias(guess);
+    guess = isAlias ? isAlias : guess;
     
     if (this.checkMatch(this.data.bigCities[firstLetter], guess)) return true;
     if (this.checkMatch(this.data.cities[firstLetter], guess)) return true;
     return false;
-    
-    // for (let cityObj of this.data.bigCities[firstLetter]) {
-    //   if (cityObj.city.toLowerCase() === guess.toLowerCase()) {
-    //     this.recentTurn = {
-    //       city: cityObj,
-    //       lastLetter: this.defineLastLetter(cityObj.city)
-    //     }
-    //     this.deleteCity(cityObj);
-    //     return true;
-    //   }
-    // }
-    // 
-    // for (let cityObj of this.data.cities[firstLetter]) {
-    //   if (cityObj.city.toLowerCase() === guess.toLowerCase()) {
-    //     this.recentTurn = {
-    //       city: cityObj,
-    //       lastLetter: this.defineLastLetter(cityObj.city)
-    //     }
-    //     this.deleteCity(cityObj);
-    //     return true;
-    //   }
-    // }
   }
   
   checkMatch(dataOnLetter, guess) {
@@ -90,6 +70,15 @@ class Computer {
         return true;
       }
     }
+  }
+  
+  checkAlias(guess) {
+    for (let city of cityAliases) {
+      if (city.alias.toLowerCase() === guess.toLowerCase()) {
+        return city.original;
+      }
+    }
+    return null;
   }
   
   deleteCity(cityData) {

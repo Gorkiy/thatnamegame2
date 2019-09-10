@@ -28,8 +28,6 @@ class TurnsList extends Component {
       let currentTurn = <Turn key={lastTurn} turnNumber={this.props.turnNumber} firstLetter={this.props.turn.firstLetter} player={this.props.turn.activePlayer} blank={true} />
       turns.push(currentTurn);
     }
-    console.log(turns);
-    
     return turns;
   }
   

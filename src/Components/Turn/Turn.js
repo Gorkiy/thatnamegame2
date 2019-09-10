@@ -5,16 +5,18 @@ import './Turn.css';
 
 const TurnItem = posed.li({
   enter: {
-    rotateY: 0,
+    y: -5,
+    rotateX: 0,
     opacity: 1,
     delay: 0,
+    transformOrigin: 'bottom',
     transition: {
-      y: { type: 'spring', stiffness: 1000, damping: 15 },
+      rotateX: { type: 'spring', stiffness: 400, damping: 18 },
       default: { duration: 500 }
     }
   },
   exit: {
-    rotateY: -180,
+    rotateX: 180,
     opacity: 0,
     transition: { duration: 500 }
   }
