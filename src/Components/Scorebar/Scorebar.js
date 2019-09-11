@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import posed from 'react-pose';
 import './Scorebar.css';
 
-// <span className="scorebar__value">{this.props.timeLeft}</span>
-
 const TimeLeft = posed.span({
   normal: {
     scale: 1,

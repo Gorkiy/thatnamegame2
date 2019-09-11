@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { PulseLoader } from 'react-spinners';
+import SplitText from 'react-pose-text';
 import posed from 'react-pose';
 import './Turn.css';
 
@@ -21,6 +22,15 @@ const TurnItem = posed.li({
     transition: { duration: 500 }
   }
 });
+
+const charPoses = {
+  exit: { opacity: 0, y: 20 },
+  enter: {
+    opacity: 1,
+    y: 0,
+    delay: ({ charIndex }) => charIndex * 30
+  }
+};
 
 class Turn extends Component {
   constructor(props) {
@@ -61,7 +71,7 @@ class Turn extends Component {
         </div>
       )
     } else {
-      return this.props.city;
+      return <SplitText initialPose="exit" pose="enter" charPoses={charPoses}>{this.props.city}</SplitText>;
     }
   }
   
@@ -110,7 +120,7 @@ class Turn extends Component {
             {this.renderTurnNumber(this.props.turnNumber)}
           </span>
           <span className="turns__city">
-            {this.renderCity()}
+              {this.renderCity()}
           </span>
           <span className="turns__country">
             {this.renderCountry()}

@@ -1,15 +1,44 @@
 import React, { Component } from 'react';
+import posed from 'react-pose';
 import './Modal.css';
+
+const ModalBox = posed.div({
+  enter: {
+    y: '-50%',
+    x: '-50%',
+    scale: 1,
+    opacity: 1,
+    transition: {
+      scale: { type: 'spring', stiffness: 500, damping: 15 },
+      default: { duration: 300 }
+    }
+  },
+  exit: {
+    y: '-50%',
+    x: '-50%',
+    scale: 1.5,
+    opacity: 0,
+    transition: { duration: 150 }
+  }
+});
 
 class Modal extends Component {
   constructor(props) {
     super(props);
-    this.state = { isNewRecord: false };
+    this.state = { 
+      isNewRecord: false,
+      isShown: false
+     };
     this.handleClick = this.handleClick.bind(this);
+  }
+  
+  componentDidMount() {
+    this.setState({ isShown: true });
   }
   
   componentDidUpdate(prevProps) {
     if (prevProps.gameEnded !== this.props.gameEnded && this.props.gameEnded) {
+      this.setState({ isShown: true });
       if (this.defineRecord()) this.setState({ isNewRecord: true });
     }
   }
@@ -17,6 +46,7 @@ class Modal extends Component {
   handleClick() {
     this.props.onButtonClick();
     this.setState({ isNewRecord: false });
+    this.setState({ isShown: false });
   }
   
   getContent() {
@@ -62,16 +92,17 @@ class Modal extends Component {
   }
   
   render() {
-    const gameStarted = !this.props.gameStarted || this.props.gameEnded ? "modal_show" : "";
-    
+    const gameStarted = !this.props.gameStarted || this.props.gameEnded ? 'modal_show' : '';
+    const isShown = this.state.isShown ? true : false;
+        
     return (
       <div className={`modal ${gameStarted}`}>
-        <div className="modal-content">
-          <h2 className="modal__title">{this.getContent().title}</h2>
-          <p className="modal__description">{this.getContent().description}</p>
-          <button className="modal__button" type="button" onClick={this.handleClick}>{this.getContent().buttonText}
+        <ModalBox className='modal-content' pose={isShown ? 'enter' : 'exit'} >
+          <h2 className='modal__title'>{this.getContent().title}</h2>
+          <p className='modal__description'>{this.getContent().description}</p>
+          <button className='modal__button' type='button' onClick={this.handleClick}>{this.getContent().buttonText}
           </button>
-        </div>
+          </ModalBox>
       </div>
     );
   }

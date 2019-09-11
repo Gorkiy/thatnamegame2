@@ -24,7 +24,6 @@
   border-radius: 50px;
   border: none;
   outline: none;
-  /* caret-color: #FD8A2E; */
   caret-color: white;
 }
 
@@ -68,7 +67,9 @@
 }
 
 .guess__button:hover {
+  transform: scale(1.1);
   background-color: #FAAD32;
+  
 }
 
 .guess__button:active {
