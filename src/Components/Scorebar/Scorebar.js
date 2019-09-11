@@ -6,7 +6,7 @@ const TimeLeft = posed.span({
   normal: {
     scale: 1,
     opacity: 1,
-    color: '#ffffff',
+    color: '#FFFFFF',
     transformOrigin: 'bottom',
     transition: {
       scale: { type: 'spring', stiffness: 700, damping: 20 },

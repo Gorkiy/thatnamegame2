@@ -1,5 +1,4 @@
 .turns__item {
-  /* margin: 15px; */
   margin: 7px 0;
   padding: 0 20px;
   position: relative;
@@ -19,15 +18,10 @@
           box-shadow: -3px 5px 0 0 rgba(52,50,250,0.15);
   border-radius: 3px;
   font-family: "Montserrat";
-  /* perspective: 1000px;
-	transform-style: preserve-3d;
-  transform-origin: top; */
-  
-  /* transform-style: preserve-3d; */
-  /* transform-origin: bottom; */
 }
 
 .turns__city-wrapper {
+  padding: 15px 0;
   width: 80%;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -37,7 +31,6 @@
   -webkit-box-align: baseline;
       -ms-flex-align: baseline;
           align-items: baseline;
-  padding: 15px 0;
 }
 
 .turns__number {
@@ -49,14 +42,14 @@
 }
 
 .turns__city {
-  width: 100%;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
   display: inline-block;
+  vertical-align: bottom;
+  width: 100%;
   font-size: 20px;
   color: #000000;
-  vertical-align: bottom;
 }
 
 .turns__spinner-wrapper {
@@ -71,19 +64,19 @@
 }
 
 .turns__country {
+  margin-top: 3px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
   max-width: 150px;
-  margin-top: 3px;
   font-size: 12px;
   color: #737373;
   text-transform: uppercase;
 }
 
 .turns__bonus {
-  display: none;
   margin-left: 4px;
+  display: none;
   font-size: 12px;
   color: #FD8A2E;
   text-transform: uppercase;
@@ -121,22 +114,6 @@
   text-align: center;
   color: #FFFFFF;
 }
-
-.fade-enter {
-  opacity: 0;
-}
-.fade-enter-active {
-  opacity: 1;
-  transition: opacity 400ms;
-}
-.fade-exit {
-  opacity: 1;
-}
-.fade-exit-active {
-  opacity: 0;
-  transition: opacity 400ms;
-}
-
 
 @media (min-width: 375px) {
   .turns__country {

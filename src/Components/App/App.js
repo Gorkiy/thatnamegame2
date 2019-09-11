@@ -10,6 +10,7 @@ import './App.css';
 let comp = new Computer('ru');
 const gameConfig = {
   turnLimit: 60,
+  finalScore: 100,
   cityValue: {'0': 3, '1': 1, '2': 2}
 }
 
@@ -29,7 +30,6 @@ class App extends Component {
       computer: 0
     },
     turnScore: null,
-    timer: null,
     message: {
       code: 0,
       value: null,
@@ -39,7 +39,7 @@ class App extends Component {
   }
 
   async makeTurn(player) {
-    if (player === 'computer') {
+    if (player === 'computer' && !this.state.gameEnded) {
       await this.setState({ turnNumber: this.state.turnNumber + 1 });
       const answer = comp.answer(this.state.turn.firstLetter);
       await new Promise((resolve, reject) => {
@@ -52,16 +52,18 @@ class App extends Component {
           }.bind(this), 2000)
         );
       });
-    } else if (player === 'human') {
+    } else if (player === 'human' && !this.state.gameEnded) {
       this.setState({ isAccepted: true });
       const recentTurn = comp.recentTurn.city;
       await this.incrementScore('human', recentTurn.size);
       await this.updateGameState('human', recentTurn);
-      this.makeTurn('computer');
+      if (!this.state.gameEnded) this.makeTurn('computer');
     }
   }
 
   updateGameState(player, cityObj) {
+    if (this.state.score[player] >= gameConfig.finalScore) this.setState({ gameEnded: true });
+    
     const nextPlayer = player === 'human' ? 'computer' : 'human';
     cityObj.player = player;
     cityObj.turnNumber = this.state.turnNumber;
@@ -88,7 +90,7 @@ class App extends Component {
     
     this.timer = setInterval(function() {
       this.setState({ timeLeft: this.state.timeLeft - 1 });
-      if (this.state.timeLeft <= 0) {
+      if (this.state.timeLeft <= 0 || this.state.score.human >= gameConfig.finalScore || this.state.score.computer >= gameConfig.finalScore) {
         clearInterval(this.timer);
         this.setState({ gameEnded: true});
         this.setState({ gameStarted: false});
@@ -210,7 +212,7 @@ class App extends Component {
   render() {
     return (
       <div className="game-wrapper">
-        <Modal gameStarted={this.state.gameStarted} gameEnded={this.state.gameEnded} score={this.state.score} onButtonClick={this.onButtonClick}/>
+        <Modal gameStarted={this.state.gameStarted} gameEnded={this.state.gameEnded} score={this.state.score} finalScore={gameConfig.finalScore} onButtonClick={this.onButtonClick}/>
         <Scorebar turn={this.state.turnNumber} score={this.state.score} timeLeft={this.state.timeLeft} gameEnded={this.state.gameEnded}/>
         <TurnsList turn={this.state.turn} turnNumber={this.state.turnNumber} playedCities={this.state.playedCities} gameStarted={this.state.gameStarted} gameEnded={this.state.gameEnded}/>
         { !this.state.gameEnded ? <Message message={this.state.message} gameEnded={this.state.gameEnded} isAccepted={this.state.isAccepted}/> : '' }

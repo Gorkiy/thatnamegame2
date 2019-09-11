@@ -13,24 +13,29 @@ const acceptedMessages = [
 class Message extends Component {
   constructor(props) {
     super(props);
-    this.state = { timer: null, isShown: false };
+    this.state = { isShown: false };
     this.msgRef = React.createRef();
+    this.timer = null;
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.message.id !== this.props.message.id) {
+    if (prevProps.message.id !== this.props.message.id && !this.props.gameEnded) {
       this.setState({ isShown: true });
       this.msgRef.current.classList.remove('visually-hidden');
       this.runTimer(this.props.message.id);
     }
   }
   
+  componentWillUnmount() {
+    clearTimeout(this.timer);
+  }
+  
   runTimer(id) {
     this.timer = setTimeout(function() {
       this.setState({ isShown: false });
       this.msgRef.current.classList.add('visually-hidden');
-      if (id !== this.props.message.id) {
-        clearInterval(this.timer);
+      if (id !== this.props.message.id || this.props.gameEnded) {
+        clearTimeout(this.timer);
         this.setState({ isShown: true });
         this.msgRef.current.classList.remove('visually-hidden');
       }

@@ -53,26 +53,41 @@ class Modal extends Component {
     if (this.props.gameEnded) {
       let recordPart = this.state.isNewRecord ? 'Это, на секундочку, новый рекорд!' : '';
       let pointsPart = this.defineWordEnding(this.props.score.human);
-
-      return {
-        title: 'Все, приехали!',
-        description: <React.Fragment>Я насчитал <strong>{this.props.score.human}</strong> балл{pointsPart}. {recordPart}<br/>
-        Желтая кнопка ниже приглашает повторить.</React.Fragment>,
-        buttonText: 'Еще разок.'
+      
+      
+      if (this.props.score.human >= this.props.finalScore) {
+        return {
+          title: 'Очень эпично!',
+          description: `Победа! Тебе удалось набрать ${this.props.finalScore} баллов в "Города" быстрее компьютера. Совпадение?`,
+          buttonText: 'Не думаю.'
+        }
+      } else if (this.props.score.computer >= this.props.finalScore) {
+        return {
+          title: 'Это фиаско.',
+          description: `Хорошая попытка, но компьютер набрал ${this.props.finalScore} баллов быстрее.`,
+          buttonText: 'Сейчас победим!'
+        }
+      } else {
+        return {
+          title: 'Все, приехали!',
+          description: <React.Fragment>Я насчитал <strong>{this.props.score.human}</strong> балл{pointsPart}. {recordPart}<br/>
+          Желтая кнопка ниже приглашает повторить.</React.Fragment>,
+          buttonText: 'Еще разок.'
+        }
       }
     }
     
     return {
       title: 'Новая игра',
       description: <React.Fragment>Правила очень простые — называй реально существующие города на последнюю букву города, который сыграл компьютер. <br /><br />
-      <strong>Например</strong>: Москва 👉 Амстердам 👉 Мюнхен <br /><br /> P.S. Кстати, у компьютера выиграть невозможно, поэтому не расстраивайся.</React.Fragment>,
+      <strong>Например</strong>: Москва 👉 Амстердам 👉 Мюнхен <br /><br /> Для победы достаточно набрать {this.props.finalScore} баллов быстрее компьютера.</React.Fragment>,
       buttonText: 'Понятно.'
     }
   }
   
   defineRecord() {
     const matchScore = this.props.score.human;
-    let bestScore = -Infinity;
+    let bestScore = 0;
     
     if (!localStorage.getItem('bestScore')) {
       localStorage.setItem('bestScore', matchScore);
