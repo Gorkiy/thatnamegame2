@@ -44,9 +44,8 @@ class UserInput extends Component {
       <div className="guess">
         <form className="guess__form" onSubmit={this.onFormSubmit}>
           <input className="guess__input" type="text" ref={this.inputRef} value={this.state.guess} 
-          onChange={this.handleChange} />
-          <button className="guess__button" type="submit" ref={this.buttonRef}></button>
-          
+          onChange={this.handleChange} aria-label="Введите город" />
+          <button className="guess__button" type="submit" ref={this.buttonRef} aria-label="Город (версия)"></button>
         </form>
       </div>
     );

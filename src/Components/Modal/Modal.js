@@ -97,10 +97,10 @@ class Modal extends Component {
         
     return (
       <div className={`modal ${gameStarted}`}>
-        <ModalBox className='modal-content' pose={isShown ? 'enter' : 'exit'} >
-          <h2 className='modal__title'>{this.getContent().title}</h2>
-          <p className='modal__description'>{this.getContent().description}</p>
-          <button className='modal__button' type='button' onClick={this.handleClick}>{this.getContent().buttonText}
+        <ModalBox className="modal-content" pose={isShown ? 'enter' : 'exit'} >
+          <h2 className="modal__title">{this.getContent().title}</h2>
+          <p className="modal__description">{this.getContent().description}</p>
+          <button className="modal__button" type="button" onClick={this.handleClick}>{this.getContent().buttonText}
           </button>
           </ModalBox>
       </div>
