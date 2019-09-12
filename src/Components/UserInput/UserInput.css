@@ -55,6 +55,14 @@
           box-shadow: -4px 4px 0 0 rgba(0,0,0,0.20);
 }
 
+.guess__button:hover {
+  -webkit-transform: scale(1.1);
+          transform: scale(1.1);
+  background-image: url("./send-hover.svg");
+  background-size: 36px 36px;
+  background-color: #FAAD32;
+}
+
 .guess__button:focus {
   border-color: #FFFFFF;
 }
@@ -64,13 +72,6 @@
   -webkit-box-shadow: -2px 2px 0 0 rgba(0,0,0,0.20);
           box-shadow: -2px 2px 0 0 rgba(0,0,0,0.20);
   border: none;
-}
-
-.guess__button:hover {
-  -webkit-transform: scale(1.1);
-          transform: scale(1.1);
-  background-color: #FAAD32;
-  
 }
 
 .guess__button:active {

@@ -102,7 +102,6 @@
 }
 
 .turns__score {
-  padding-top: 2px;
   position: absolute;
   top: 7px;
   right: 7px;
@@ -111,6 +110,7 @@
   border-radius: 50%;
   background-color: #FD8A2E;
   font-size: 18px;
+  line-height: 24px;
   text-align: center;
   color: #FFFFFF;
 }
@@ -166,11 +166,11 @@
   }
 
   .turns__score {
-    padding-top: 4px;
     top: 12px;
     right: 12px;
     width: 28px;
     height: 28px;
     font-size: 18px;
+    line-height: 28px;
   }
 }
